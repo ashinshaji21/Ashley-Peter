@@ -21,8 +21,7 @@ html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;bac
 .cover{
   opacity:1;
   position:fixed;inset:0;z-index:30;
-  cursor:pointer;
-  transition:opacity 2.5s ease-in-out;
+  transition:opacity 2s ease-in-out;
 }
 #cover-vid{
   opacity:1;pointer-events:all;
@@ -221,6 +220,56 @@ html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;bac
 .shb{font-family:"Cinzel",serif;font-size:10px;letter-spacing:.15em;color:var(--sage-dark);display:block;margin-bottom:4px}
 .maptap{position:absolute;bottom:8px;right:10px;background:rgba(0,0,0,.4);color:#fff;font-family:Cinzel,serif;font-size:8px;letter-spacing:.12em;padding:3px 8px;border-radius:20px}
 
+/* RSVP */
+.rsvp{background:var(--cream-warm);padding:3.5rem 1.5rem 4rem;text-align:center}
+.rsvp .sl{color:var(--sage)}
+.rsvp-title{font-family:"Great Vibes",cursive;font-size:clamp(40px,11vw,60px);color:var(--sage-dark);margin:.2rem 0 .4rem;line-height:1.1}
+.rsvp-sub{font-family:"Cormorant Garamond",serif;font-size:clamp(14px,3.5vw,17px);color:#7a6e58;font-style:italic;margin-bottom:2rem;opacity:.85}
+.rsvp-form{max-width:420px;margin:0 auto;text-align:left;display:flex;flex-direction:column;gap:1.2rem}
+.rf-group{display:flex;flex-direction:column;gap:.4rem}
+.rf-label{font-family:"Cinzel",serif;font-size:10px;letter-spacing:.2em;color:var(--sage-dark);text-transform:uppercase}
+.rf-input,.rf-select{
+  font-family:"Cormorant Garamond",serif;font-size:16px;color:#3a3025;
+  background:#fff;border:1px solid rgba(107,124,92,.3);border-radius:8px;
+  padding:.7rem 1rem;width:100%;outline:none;
+  transition:border-color .2s,box-shadow .2s;
+  -webkit-appearance:none;appearance:none;
+}
+.rf-input:focus,.rf-select:focus{border-color:var(--sage);box-shadow:0 0 0 3px rgba(107,124,92,.12)}
+.rf-select-wrap{position:relative}
+.rf-select-wrap::after{content:"▾";position:absolute;right:1rem;top:50%;transform:translateY(-50%);color:var(--sage);pointer-events:none;font-size:14px}
+.rf-side{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+.rf-side-btn{
+  font-family:"Cinzel",serif;font-size:10px;letter-spacing:.15em;
+  padding:.75rem .5rem;border-radius:8px;border:1.5px solid rgba(107,124,92,.35);
+  background:#fff;color:var(--sage-dark);cursor:pointer;text-align:center;
+  transition:all .2s;text-transform:uppercase;
+}
+.rf-side-btn.chosen{background:var(--sage-dark);color:#fff;border-color:var(--sage-dark)}
+.rf-submit{
+  font-family:"Cinzel",serif;font-size:11px;letter-spacing:.25em;text-transform:uppercase;
+  background:var(--sage-dark);color:#fff;border:none;border-radius:8px;
+  padding:1rem;cursor:pointer;margin-top:.4rem;
+  transition:background .2s,transform .1s;
+}
+.rf-submit:hover{background:var(--sage)}
+.rf-submit:active{transform:scale(.98)}
+.rf-msg{
+  font-family:"Cormorant Garamond",serif;font-size:15px;
+  text-align:center;padding:.8rem 1rem;border-radius:8px;
+  display:none;
+}
+.rf-msg.ok{background:rgba(107,124,92,.12);color:var(--sage-dark);border:1px solid rgba(107,124,92,.25)}
+.rf-msg.err{background:rgba(180,60,60,.08);color:#8a3030;border:1px solid rgba(180,60,60,.2)}
+.rsvp-export{
+  display:block;margin:1.5rem auto 0;
+  font-family:"Cinzel",serif;font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--sage);background:none;border:1px solid rgba(107,124,92,.3);
+  border-radius:6px;padding:.5rem 1.1rem;cursor:pointer;
+  transition:background .2s,color .2s;
+}
+.rsvp-export:hover{background:var(--sage-dark);color:#fff;border-color:var(--sage-dark)}
+
 /* Q&A */
 .qa{background:linear-gradient(160deg,#2e3a1e,#3a4828);padding:3.5rem 1.5rem}
 .qa .sl{color:var(--gold-light);text-align:center}
@@ -257,7 +306,6 @@ html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;bac
     </video>
   </div>
 
-  <div class="tap-hint">✦ &nbsp; Tap anywhere to open &nbsp; ✦</div>
 </div>
 
 <!-- ═════ LAYER 3: Full invitation ═════ -->
@@ -266,6 +314,7 @@ html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;bac
     <span class="nl" onclick="goTo('story')">Story</span>
     <span class="nl" onclick="goTo('prog')">Program</span>
     <span class="nl" onclick="goTo('venues')">Venues</span>
+    <span class="nl" onclick="goTo('rsvp')">RSVP</span>
     <span class="nl" onclick="goTo('qa')">Q&amp;A</span>
   </nav>
 
@@ -363,6 +412,48 @@ html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;bac
     </div>
   </section>
 
+  <section class="rsvp" id="rsvp">
+    <p class="sl" style="color:var(--sage)">Join Us On Our Special Day</p>
+    <h2 class="rsvp-title">RSVP</h2>
+    <p class="rsvp-sub">Kindly reply by March 15th, 2026</p>
+
+    <div class="rsvp-form" id="rsvp-form">
+      <div class="rf-group">
+        <label class="rf-label" for="rf-name">Full Name</label>
+        <input class="rf-input" id="rf-name" type="text" placeholder="Your full name" autocomplete="name">
+      </div>
+
+      <div class="rf-group">
+        <label class="rf-label" for="rf-guests">Number of Guests (including yourself)</label>
+        <div class="rf-select-wrap">
+          <select class="rf-select" id="rf-guests">
+            <option value="">Select…</option>
+            <option value="1">1 — Just me</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6+">6 or more</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="rf-group">
+        <span class="rf-label">I am attending from the</span>
+        <div class="rf-side" id="rf-side-btns">
+          <button class="rf-side-btn" onclick="chooseSide(this,'Bride\'s Side')">👰 Bride's Side</button>
+          <button class="rf-side-btn" onclick="chooseSide(this,'Groom\'s Side')">🤵 Groom's Side</button>
+        </div>
+      </div>
+
+      <div class="rf-msg" id="rf-msg"></div>
+
+      <button class="rf-submit" onclick="submitRSVP()">✦ &nbsp; Confirm My Attendance &nbsp; ✦</button>
+    </div>
+
+    <button class="rsvp-export" onclick="exportRSVP()" id="rsvp-export-btn" style="display:none">⬇ Download Guest List</button>
+  </section>
+
   <section class="qa" id="qa">
     <p class="sl">Good To Know</p>
     <h2 class="qat">Questions &amp; Answers</h2>
@@ -385,9 +476,15 @@ html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;bac
 
 <script>
 (function() {
-  /* ── State: 0=paused cover, 1=video playing, 2=invitation ── */
+
+  /* ════════════════════════════════════════
+     STATE
+     0 = video playing (autoplay on load)
+     1 = invitation visible
+  ════════════════════════════════════════ */
   var state = 0;
   var coverVid, vid, vidBg, inv;
+  var selectedSide = '';
 
   /* ── Utility ── */
   function goTo(id) {
@@ -416,7 +513,7 @@ html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;bac
     var m = document.getElementById('cd-m');
     var s = document.getElementById('cd-s');
     function tick() {
-      var now = Date.now();
+      var now  = Date.now();
       var diff = Math.max(0, WED - now);
       var days = Math.floor(diff / 86400000); diff %= 86400000;
       var hrs  = Math.floor(diff / 3600000);  diff %= 3600000;
@@ -437,14 +534,12 @@ html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;bac
     var dotsWrap = document.getElementById('slide-dots');
     if (!slides.length || !dotsWrap) return;
     var cur = 0;
-
     slides.forEach(function(_, i) {
-      var d = document.createElement('div');
-      d.className = 'sdot' + (i === 0 ? ' on' : '');
-      d.addEventListener('click', function() { goSlide(i); });
-      dotsWrap.appendChild(d);
+      var dot = document.createElement('div');
+      dot.className = 'sdot' + (i === 0 ? ' on' : '');
+      dot.addEventListener('click', function() { goSlide(i); });
+      dotsWrap.appendChild(dot);
     });
-
     function goSlide(n) {
       slides[cur].classList.remove('active');
       dotsWrap.children[cur].classList.remove('on');
@@ -455,137 +550,184 @@ html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;bac
     setInterval(function() { goSlide(cur + 1); }, 4500);
   }
 
-  /* ── Phase 2: fade video out, show invitation ── */
+  /* ── Show invitation (fade cover out) ── */
   function showInvitation() {
-    if (state >= 2) return;
-    state = 2;
+    if (state >= 1) return;
+    state = 1;
 
-    var FADE_MS = 2500;
     void coverVid.offsetHeight;
     void inv.offsetHeight;
 
+    /* Start 2-second fade-out of video */
     requestAnimationFrame(function() { coverVid.classList.add('fade-out'); });
 
+    /* Fade invitation in simultaneously */
     setTimeout(function() {
       requestAnimationFrame(function() {
         inv.classList.add('show');
         startCountdown();
         setTimeout(revealNames, 600);
       });
-    }, 120);
+    }, 100);
 
+    /* Remove cover from DOM after fade completes */
     setTimeout(function() {
       try { vid.pause(); }    catch(e) {}
       try { vidBg.pause(); } catch(e) {}
       try { coverVid.remove(); } catch(e) {}
-    }, FADE_MS + 200);
+    }, 2200);
   }
 
-  /* ── Phase 1: tap → play video → 2s later show invitation ── */
-  function handleTap() {
-    if (state !== 0) return;
-    state = 1;
-
-    var hint = coverVid.querySelector('.tap-hint');
-    if (hint) hint.style.opacity = '0';
-
+  /* ── Autoplay video on load, show invitation after 2s ── */
+  function startVideo() {
     vid.muted   = true;
     vidBg.muted = true;
 
-    /* Sync blurred bg with main video */
-    function syncBg(force) {
+    function syncBg() {
       var diff = Math.abs((vidBg.currentTime || 0) - (vid.currentTime || 0));
-      if (force || diff > 0.06) {
-        try { vidBg.currentTime = vid.currentTime; } catch(e) {}
-      }
+      if (diff > 0.06) try { vidBg.currentTime = vid.currentTime; } catch(e) {}
     }
-    vid.addEventListener('seeking',    function() { syncBg(true); });
-    vid.addEventListener('timeupdate', function() { syncBg(false); });
-    vid.addEventListener('play', function() {
-      try { vidBg.play(); } catch(e) {}
-      syncBg(true);
-    });
-    vid.addEventListener('pause', function() {
-      try { vidBg.pause(); } catch(e) {}
-    });
+    vid.addEventListener('timeupdate', syncBg);
+    vid.addEventListener('play', function() { try { vidBg.play(); } catch(e) {} });
 
-    vid.currentTime = 0;
-
-    function attemptPlay() {
+    function doPlay() {
+      vid.currentTime = 0;
       var p = vid.play();
-      if (p && p.catch) p.catch(function() { showInvitation(); });
+      if (p && p.catch) {
+        p.catch(function() {
+          /* Autoplay blocked — skip straight to invitation */
+          showInvitation();
+        });
+      }
+      /* After 2 seconds of video, begin fade to invitation */
+      setTimeout(showInvitation, 2000);
     }
 
     if (vid.readyState >= 3) {
-      attemptPlay();
+      doPlay();
     } else {
-      vid.addEventListener('canplay', attemptPlay, { once: true });
+      vid.load();
+      vidBg.load();
+      vid.addEventListener('canplay', doPlay, { once: true });
+      /* Safety — if video never loads within 3s, show invitation anyway */
+      setTimeout(function() { if (state === 0) showInvitation(); }, 3000);
     }
 
-    /* Show invitation 2s after tap regardless */
-    setTimeout(showInvitation, 2000);
+    /* Also trigger on natural end (short videos) */
     vid.addEventListener('ended', showInvitation, { once: true });
-    vid.addEventListener('error', showInvitation, { once: true });
   }
 
-  /* ── Tap handler (debounced) ── */
-  var lastTs = 0;
-  function onCoverTap(e) {
-    var now = Date.now();
-    if (now - lastTs < 700) return;
-    lastTs = now;
-    try { e.preventDefault(); }  catch(_) {}
-    try { e.stopPropagation(); } catch(_) {}
-    if (state === 0) { handleTap(); return; }
-    if (state === 1) { showInvitation(); }
+  /* ══════════════════════════════════════
+     RSVP
+  ══════════════════════════════════════ */
+
+  var STORE_KEY = 'ap_wedding_rsvp';
+
+  function getEntries() {
+    try {
+      return JSON.parse(localStorage.getItem(STORE_KEY) || '[]');
+    } catch(e) { return []; }
   }
 
-  /* ── Show first video frame while paused ── */
-  function paintFirstFrame() {
-    vid.muted   = true;
-    vidBg.muted = true;
-    function tryPaint() {
-      var p = vid.play();
-      if (p && p.then) {
-        p.then(function() {
-          vid.pause();
-          try { vid.currentTime = 0.001; } catch(e) {}
-        }).catch(function() {
-          try { vid.currentTime = 0.001; } catch(e) {}
-        });
-      }
-      try { vidBg.currentTime = 0.001; } catch(e) {}
-    }
-    if (vid.readyState >= 2) {
-      tryPaint();
-    } else {
-      vid.addEventListener('loadeddata', tryPaint, { once: true });
-    }
-    vid.load();
-    vidBg.load();
+  function saveEntry(entry) {
+    var entries = getEntries();
+    entries.push(entry);
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(entries)); } catch(e) {}
   }
 
-  /* ── Boot on DOMContentLoaded ── */
+  function chooseSide(btn, side) {
+    selectedSide = side;
+    var btns = document.querySelectorAll('.rf-side-btn');
+    btns.forEach(function(b) { b.classList.remove('chosen'); });
+    btn.classList.add('chosen');
+  }
+
+  function showMsg(type, text) {
+    var el = document.getElementById('rf-msg');
+    el.className = 'rf-msg ' + type;
+    el.textContent = text;
+    el.style.display = 'block';
+  }
+
+  function submitRSVP() {
+    var name   = (document.getElementById('rf-name').value || '').trim();
+    var guests = document.getElementById('rf-guests').value;
+
+    if (!name) { showMsg('err', 'Please enter your full name.'); return; }
+    if (!guests) { showMsg('err', 'Please select the number of guests.'); return; }
+    if (!selectedSide) { showMsg('err', 'Please choose Bride\'s Side or Groom\'s Side.'); return; }
+
+    var entry = {
+      timestamp: new Date().toLocaleString(),
+      name:      name,
+      guests:    guests,
+      side:      selectedSide
+    };
+
+    saveEntry(entry);
+
+    showMsg('ok', '🤎 Thank you, ' + name + '! We look forward to celebrating with you.');
+
+    /* Reset form */
+    document.getElementById('rf-name').value = '';
+    document.getElementById('rf-guests').value = '';
+    var btns = document.querySelectorAll('.rf-side-btn');
+    btns.forEach(function(b) { b.classList.remove('chosen'); });
+    selectedSide = '';
+
+    /* Show export button */
+    document.getElementById('rsvp-export-btn').style.display = 'block';
+  }
+
+  function exportRSVP() {
+    var entries = getEntries();
+    if (!entries.length) { alert('No RSVPs recorded yet.'); return; }
+
+    var rows = [['Timestamp', 'Full Name', 'Guests', 'Side']];
+    entries.forEach(function(e) {
+      rows.push([
+        '"' + (e.timestamp || '') + '"',
+        '"' + (e.name    || '') + '"',
+        '"' + (e.guests  || '') + '"',
+        '"' + (e.side    || '') + '"'
+      ]);
+    });
+
+    var csv = rows.map(function(r) { return r.join(','); }).join('\n');
+    var blob = new Blob([csv], { type: 'text/csv' });
+    var url  = URL.createObjectURL(blob);
+    var a    = document.createElement('a');
+    a.href     = url;
+    a.download = 'ashley-peter-rsvp.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  /* ── Boot ── */
   document.addEventListener('DOMContentLoaded', function() {
     coverVid = document.getElementById('cover-vid');
     vid      = document.getElementById('env-vid');
     vidBg    = document.getElementById('env-vid-bg');
     inv      = document.getElementById('inv');
 
-    paintFirstFrame();
-    initSlideshow();
-
-    if (window.PointerEvent) {
-      coverVid.addEventListener('pointerdown', onCoverTap, { passive: false });
-    } else {
-      coverVid.addEventListener('touchstart', onCoverTap, { passive: false });
-      coverVid.addEventListener('click',      onCoverTap, { passive: false });
+    /* Show export button if prior RSVPs exist */
+    if (getEntries().length > 0) {
+      document.getElementById('rsvp-export-btn').style.display = 'block';
     }
+
+    initSlideshow();
+    startVideo();
   });
 
-  /* Expose globals needed by inline HTML handlers */
-  window.goTo = goTo;
-  window.tQA  = tQA;
+  /* Expose globals for inline handlers */
+  window.goTo       = goTo;
+  window.tQA        = tQA;
+  window.chooseSide = chooseSide;
+  window.submitRSVP = submitRSVP;
+  window.exportRSVP = exportRSVP;
+
 })();
 </script>
 </body>
