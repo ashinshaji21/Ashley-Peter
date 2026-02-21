@@ -1,6 +1,3 @@
-Wedding final updated v13 · HTML
-Copy
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,9 +12,10 @@ Copy
   --cream:#f5ede0;--cream-warm:#f0e8d5;
   --gold:#c9a96e;--gold-light:#e2c99a;
   --white:#faf7f2;
+  /* Beach palette */
+  --ocean:#7aa3b8;--ocean-light:#b0cdd9;--sand:#c8b89a;--dusk:#4a6070;
 }
 html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;background:#1e2a10}
-
 
 /* ── COVER STACK ─────────────────────────────────────── */
 .cover{
@@ -55,19 +53,14 @@ html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;bac
   object-fit:contain;object-position:center;
   background:transparent;
 }
-/* Make opacity transitions more reliable on mobile Safari */
-.cover, #cover-vid{
-  will-change:opacity, transform;
+.cover,#cover-vid{
+  will-change:opacity,transform;
   backface-visibility:hidden;
   -webkit-backface-visibility:hidden;
   transform:translateZ(0);
 }
-
 #cover-vid.show{opacity:1;pointer-events:all;}
-
-/* fade-out class applied to whichever is active */
 .cover.fade-out{opacity:0;pointer-events:none;}
-
 
 .tap-hint{
   position:absolute;left:50%;top:66%;
@@ -100,7 +93,7 @@ html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;bac
 /* NAV */
 .nav{
   position:sticky;top:0;z-index:100;
-  background:rgba(74,89,64,.96);backdrop-filter:blur(10px);
+  background:rgba(74,89,64,.96);backdrop-filter:blur(12px);
   padding:.75rem 1rem;display:flex;justify-content:center;gap:1.5rem;
   border-bottom:1px solid rgba(200,170,100,.2);
 }
@@ -108,45 +101,54 @@ html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;bac
 .nl:hover{color:var(--gold-light)}
 
 /* HERO */
-.hero{position:relative;height:100svh;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#0e0b06}
-.church{position:absolute;inset:0;overflow:hidden}
-.beam{position:absolute;top:0;width:60px;height:100%;background:linear-gradient(to bottom,rgba(210,180,120,.15),transparent 60%);transform-origin:top center;pointer-events:none}
-.beam:nth-child(1){left:28%;transform:rotate(-9deg);animation:bsway 6s ease-in-out infinite}
-.beam:nth-child(2){left:50%;width:90px;background:linear-gradient(to bottom,rgba(230,200,140,.18),transparent 70%);animation:bsway 7.5s ease-in-out infinite 1s}
-.beam:nth-child(3){left:67%;transform:rotate(9deg);animation:bsway 5.5s ease-in-out infinite .5s}
-@keyframes bsway{0%,100%{opacity:.55}50%{opacity:1}}
-.bk{position:absolute;border-radius:50%;pointer-events:none;animation:bkf linear infinite}
-@keyframes bkf{0%{transform:translateY(0) scale(1);opacity:0}10%{opacity:1}90%{opacity:.5}100%{transform:translateY(-100vh) scale(.5);opacity:0}}
-.bride-c{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:min(170px,43vw);animation:bw 12s cubic-bezier(.4,0,.6,1) infinite;z-index:3}
-@keyframes bw{
-  0%{bottom:-20%;opacity:0;transform:translateX(-50%) scale(.35)}15%{opacity:1}
-  60%{bottom:16%;transform:translateX(-50%) scale(1);opacity:.9}
-  80%{bottom:20%;transform:translateX(-50%) scale(1.02);opacity:.6}
-  100%{bottom:23%;transform:translateX(-50%) scale(1.1);opacity:0}
-}
-.bride-svg{width:100%;filter:drop-shadow(0 0 30px rgba(210,180,130,.4))}
-.petal{position:absolute;pointer-events:none;animation:pf linear infinite}
-@keyframes pf{0%{transform:translateY(-10px) rotate(0deg);opacity:0}10%{opacity:.8}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
-.hero-ov{position:absolute;inset:0;z-index:4;background:linear-gradient(to bottom,rgba(10,8,4,.65) 0%,rgba(10,8,4,.15) 30%,rgba(10,8,4,.1) 60%,rgba(10,8,4,.82) 100%)}
-@keyframes cf{0%,100%{opacity:.7;transform:scale(1)}50%{opacity:1;transform:scale(1.2)}}
+.hero{position:relative;height:100svh;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#1a2535}
 
-/* Names cascade */
+/* ── PHOTO SLIDESHOW ── */
+.slideshow{position:absolute;inset:0;z-index:1}
+.slide{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center top;
+  opacity:0;
+  transition:opacity 1.4s ease-in-out;
+  animation:slowzoom 8s ease-in-out infinite alternate;
+}
+.slide.active{opacity:1}
+@keyframes slowzoom{
+  0%{transform:scale(1.0)}
+  100%{transform:scale(1.06)}
+}
+/* Slide dots */
+.slide-dots{
+  position:absolute;bottom:52px;left:50%;transform:translateX(-50%);
+  z-index:6;display:flex;gap:8px;
+}
+.sdot{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.5);
+  cursor:pointer;transition:background .3s,transform .3s;
+}
+.sdot.on{background:#fff;transform:scale(1.3)}
+
+/* Gradient overlay — dark top+bottom, clear middle so photos shine */
+.hero-ov{position:absolute;inset:0;z-index:3;background:linear-gradient(to bottom,rgba(15,25,38,.65) 0%,rgba(15,25,38,.08) 28%,rgba(15,25,38,.08) 58%,rgba(15,25,38,.78) 100%)}
+
+/* Names */
 .hero-text{position:relative;z-index:5;text-align:center;padding:0 2rem}
 .ht-label,.ht-name,.ht-amp,.ht-meta{
   opacity:0;transform:translateY(20px);
   transition:opacity .9s ease,transform .9s ease;
 }
-.ht-label{font-family:"Cinzel",serif;font-size:clamp(8px,2.2vw,11px);letter-spacing:.45em;color:var(--gold-light);text-transform:uppercase;margin-bottom:1.2rem;display:block}
-.ht-name{font-family:"Great Vibes",cursive;font-size:clamp(54px,17vw,96px);color:var(--white);line-height:1;text-shadow:0 2px 40px rgba(0,0,0,.5);display:block}
-.ht-amp{font-family:"Great Vibes",cursive;font-size:clamp(38px,11vw,64px);color:var(--gold);display:block;margin:-.15em 0}
+.ht-label{font-family:"Cinzel",serif;font-size:clamp(8px,2.2vw,11px);letter-spacing:.45em;color:rgba(245,235,210,.92);text-transform:uppercase;margin-bottom:1.2rem;display:block;text-shadow:0 1px 10px rgba(0,0,0,.6)}
+.ht-name{font-family:"Great Vibes",cursive;font-size:clamp(54px,17vw,96px);color:#fff;line-height:1;text-shadow:0 2px 32px rgba(0,0,0,.5),0 0 60px rgba(200,180,140,.2);display:block}
+.ht-amp{font-family:"Great Vibes",cursive;font-size:clamp(38px,11vw,64px);color:rgba(210,185,140,.95);display:block;margin:-.15em 0;text-shadow:0 2px 20px rgba(0,0,0,.4)}
 .ht-meta{margin-top:1.6rem;display:block}
-.ht-date{font-family:"Cinzel",serif;font-size:clamp(11px,3vw,14px);letter-spacing:.2em;color:var(--cream);opacity:.9;margin-bottom:.4rem}
-.ht-loc{font-family:"Cormorant Garamond",serif;font-size:clamp(13px,3.5vw,16px);letter-spacing:.12em;color:var(--gold-light);font-style:italic;opacity:.85}
+.ht-date{font-family:"Cinzel",serif;font-size:clamp(11px,3vw,14px);letter-spacing:.2em;color:rgba(245,238,220,.93);margin-bottom:.4rem;text-shadow:0 1px 8px rgba(0,0,0,.5)}
+.ht-loc{font-family:"Cormorant Garamond",serif;font-size:clamp(13px,3.5vw,16px);letter-spacing:.12em;color:rgba(210,195,160,.9);font-style:italic;text-shadow:0 1px 8px rgba(0,0,0,.5)}
 .revealed{opacity:1!important;transform:translateY(0)!important}
 .div{display:flex;align-items:center;gap:1rem;margin:1.3rem auto;width:min(200px,60vw)}
-.dl{flex:1;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent)}
-.dd{width:6px;height:6px;background:var(--gold);transform:rotate(45deg);flex-shrink:0}
-.scroll-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:6;display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(210,185,140,.65);font-family:"Cinzel",serif;font-size:9px;letter-spacing:.3em;animation:sb 2s ease-in-out infinite}
+.dl{flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(210,185,140,.6),transparent)}
+.dd{width:6px;height:6px;background:rgba(210,185,140,.8);transform:rotate(45deg);flex-shrink:0}
+.scroll-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:6;display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(245,235,210,.65);font-family:"Cinzel",serif;font-size:9px;letter-spacing:.3em;animation:sb 2s ease-in-out infinite}
 .scroll-hint .ch{width:14px;height:14px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:rotate(45deg);margin-top:4px}
 @keyframes sb{0%,100%{transform:translateX(-50%) translateY(0);opacity:.55}50%{transform:translateX(-50%) translateY(5px);opacity:1}}
 
@@ -266,46 +268,14 @@ html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;bac
   </nav>
 
   <section class="hero">
-    <div class="church">
-      <div style="position:absolute;inset:0;background:linear-gradient(to bottom,#1a1208,#3a2c18 30%,#2a2010 60%,#0e0b06)"></div>
-      <div style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:min(280px,70vw);height:55%;background:radial-gradient(ellipse at 50% 0%,rgba(230,200,140,.18),rgba(200,160,80,.06) 50%,transparent 80%);border-radius:0 0 50% 50%"></div>
-      <svg style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:min(260px,65vw);height:50%;opacity:.15" viewBox="0 0 260 300" fill="none">
-        <path d="M10 300 L10 130 Q10 10 130 10 Q250 10 250 130 L250 300" stroke="#c8a860" stroke-width="2"/>
-        <path d="M30 300 L30 135 Q30 35 130 35 Q230 35 230 135 L230 300" stroke="#c8a860" stroke-width="1"/>
-      </svg>
-      <div class="beam"></div><div class="beam"></div><div class="beam"></div>
-      <div style="position:absolute;bottom:20%;left:18%;width:6px;height:6px;border-radius:50%;background:#f0d080;box-shadow:0 0 20px 10px rgba(240,200,80,.3);animation:cf 2s ease-in-out infinite"></div>
-      <div style="position:absolute;bottom:26%;left:24%;width:4px;height:4px;border-radius:50%;background:#f0d080;box-shadow:0 0 14px 7px rgba(240,200,80,.25);animation:cf 2.5s ease-in-out infinite .5s"></div>
-      <div style="position:absolute;bottom:19%;right:18%;width:6px;height:6px;border-radius:50%;background:#f0d080;box-shadow:0 0 20px 10px rgba(240,200,80,.3);animation:cf 1.8s ease-in-out infinite .3s"></div>
-      <div style="position:absolute;bottom:25%;right:24%;width:4px;height:4px;border-radius:50%;background:#f0d080;box-shadow:0 0 14px 7px rgba(240,200,80,.25);animation:cf 2.2s ease-in-out infinite .8s"></div>
+    <!-- Photo slideshow background -->
+    <div class="slideshow" id="slideshow">
+      <div class="slide active" style="background-image:url('1771651904158_image.png')"></div>
+      <div class="slide" style="background-image:url('1771651913473_image.png')"></div>
+      <div class="slide" style="background-image:url('1771651923672_image.png')"></div>
+      <div class="slide" style="background-image:url('1771651938838_image.png')"></div>
     </div>
-    <div class="bride-c">
-      <svg class="bride-svg" viewBox="0 0 120 280">
-        <defs>
-          <radialGradient id="bG"><stop offset="0%" stop-color="rgba(255,248,235,.9)"/><stop offset="100%" stop-color="rgba(230,215,185,.7)"/></radialGradient>
-          <linearGradient id="vG" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(255,250,240,.85)"/><stop offset="100%" stop-color="rgba(240,230,210,.2)"/></linearGradient>
-        </defs>
-        <path d="M45 60 Q20 100 0 180 Q10 200 30 210 Q50 180 60 150 Q70 120 60 60Z" fill="url(#vG)" opacity=".7"/>
-        <path d="M75 60 Q100 100 120 180 Q110 200 90 210 Q70 180 60 150 Q50 120 60 60Z" fill="url(#vG)" opacity=".7"/>
-        <path d="M40 130 Q10 180 0 260 Q30 280 60 280 Q90 280 120 260 Q110 180 80 130 Q70 125 60 125 Q50 125 40 130Z" fill="url(#bG)"/>
-        <path d="M45 150 Q60 145 75 150 Q60 155 45 150Z" fill="rgba(255,255,255,.4)"/>
-        <path d="M35 180 Q60 172 85 180 Q60 188 35 180Z" fill="rgba(255,255,255,.3)"/>
-        <path d="M42 90 Q40 130 40 130 L80 130 Q80 90 78 90 Q70 86 60 86 Q50 86 42 90Z" fill="rgba(255,250,240,.95)"/>
-        <path d="M42 100 Q30 115 32 130" stroke="rgba(235,215,185,.9)" stroke-width="5" fill="none" stroke-linecap="round"/>
-        <path d="M78 100 Q90 115 88 130" stroke="rgba(235,215,185,.9)" stroke-width="5" fill="none" stroke-linecap="round"/>
-        <circle cx="60" cy="135" r="13" fill="#8a9b6e" opacity=".8"/>
-        <circle cx="54" cy="130" r="8" fill="#9aaa78" opacity=".8"/>
-        <circle cx="66" cy="130" r="8" fill="#7a8b60" opacity=".8"/>
-        <circle cx="60" cy="124" r="7" fill="#aabb88" opacity=".7"/>
-        <rect x="55" y="72" width="10" height="18" rx="5" fill="rgba(235,215,190,.9)"/>
-        <ellipse cx="60" cy="62" rx="16" ry="18" fill="rgba(235,215,190,.9)"/>
-        <path d="M44 56 Q48 38 60 36 Q72 38 76 56 Q72 48 60 46 Q48 48 44 56Z" fill="rgba(80,55,30,.85)"/>
-        <path d="M44 50 Q60 42 76 50 Q90 55 110 30 Q80 45 60 42 Q40 45 10 30 Q30 55 44 50Z" fill="rgba(255,250,245,.85)"/>
-        <path d="M44 50 Q20 80 15 150 Q25 160 40 155 Q50 100 55 60 Q50 55 44 50Z" fill="rgba(255,250,245,.5)"/>
-        <path d="M76 50 Q100 80 105 150 Q95 160 80 155 Q70 100 65 60 Q70 55 76 50Z" fill="rgba(255,250,245,.5)"/>
-      </svg>
-    </div>
-    <div id="petals"></div><div id="bokeh"></div>
+
     <div class="hero-ov"></div>
     <div class="hero-text">
       <span class="ht-label" id="n0">You are invited to celebrate</span>
@@ -318,6 +288,7 @@ html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;bac
         <p class="ht-loc">Kottayam, Kerala</p>
       </span>
     </div>
+    <div class="slide-dots" id="slide-dots"></div>
     <div class="scroll-hint"><span>Scroll</span><div class="ch"></div></div>
   </section>
 
@@ -449,8 +420,6 @@ function showInvitation() {
     requestAnimationFrame(() => {
       inv.classList.add('show');
       startCountdown();
-      createBokeh();
-      createPetals();
       setTimeout(revealNames, 600);
     });
   }, 120);
@@ -534,8 +503,37 @@ if (window.PointerEvent) {
   coverVid.addEventListener('click',      onCoverTap, { passive: false });
 }
 
+/* Nav scroll */
+function goTo(id){
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth'});
+}
+
 /* QA toggles */
 function tQA(el){ el.classList.toggle('open'); }
+
+/* Slideshow */
+function initSlideshow(){
+  const slides = document.querySelectorAll('.slide');
+  const dotsWrap = document.getElementById('slide-dots');
+  let cur = 0;
+  // Build dots
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'sdot' + (i === 0 ? ' on' : '');
+    d.addEventListener('click', () => goSlide(i));
+    dotsWrap.appendChild(d);
+  });
+  function goSlide(n){
+    slides[cur].classList.remove('active');
+    dotsWrap.children[cur].classList.remove('on');
+    cur = (n + slides.length) % slides.length;
+    slides[cur].classList.add('active');
+    dotsWrap.children[cur].classList.add('on');
+  }
+  setInterval(() => goSlide(cur + 1), 4500);
+}
+initSlideshow();
 
 /* Countdown */
 const WED = new Date("2026-06-06T14:30:00+05:30").getTime();
@@ -553,42 +551,7 @@ function startCountdown(){
   tick(); setInterval(tick,1000);
 }
 
-/* Ambient bokeh */
-function createBokeh(){
-  const wrap=document.getElementById('bokeh'); if(!wrap) return;
-  for(let i=0;i<18;i++){
-    const b=document.createElement('div');
-    b.className='bk';
-    const size=8+Math.random()*26;
-    b.style.width=size+'px'; b.style.height=size+'px';
-    b.style.left=(Math.random()*100)+'%';
-    b.style.bottom=(-10 - Math.random()*20)+'px';
-    b.style.background='rgba(210,180,120,'+(0.08+Math.random()*0.18)+')';
-    b.style.filter='blur('+(0.5+Math.random()*1.4)+'px)';
-    b.style.animationDuration=(6+Math.random()*9)+'s';
-    b.style.animationDelay=(Math.random()*4)+'s';
-    wrap.appendChild(b);
-  }
-}
 
-/* Falling petals */
-function createPetals(){
-  const wrap=document.getElementById('petals'); if(!wrap) return;
-  for(let i=0;i<18;i++){
-    const p=document.createElement('div');
-    p.className='petal';
-    const size=6+Math.random()*14;
-    p.style.width=size+'px'; p.style.height=(size*0.7)+'px';
-    p.style.left=(Math.random()*100)+'%';
-    p.style.top=(-20 - Math.random()*40)+'px';
-    p.style.borderRadius='999px';
-    p.style.background='rgba(245,237,224,'+(0.25+Math.random()*0.35)+')';
-    p.style.filter='blur('+(Math.random()*0.6)+'px)';
-    p.style.animationDuration=(7+Math.random()*8)+'s';
-    p.style.animationDelay=(Math.random()*4)+'s';
-    wrap.appendChild(p);
-  }
-}
 </script>
 </body>
 </html>
