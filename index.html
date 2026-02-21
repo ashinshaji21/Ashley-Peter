@@ -1,6 +1,3 @@
-Wedding final updated v13 · HTML
-Copy
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -387,202 +384,209 @@ html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;bac
 </div>
 
 <script>
-/* ─────────────────────────────────────────
-   State machine
-   0 = cover (video paused, waiting for tap)
-   1 = video playing
-   2 = invitation visible
-───────────────────────────────────────── */
-let state = 0;
-const coverVid = document.getElementById('cover-vid');
-const vid      = document.getElementById('env-vid');
-const vidBg    = document.getElementById('env-vid-bg');
-const inv      = document.getElementById('inv');
+(function() {
+  /* ── State: 0=paused cover, 1=video playing, 2=invitation ── */
+  var state = 0;
+  var coverVid, vid, vidBg, inv;
 
-/* ── Show first frame of video on load so user sees video, not black ── */
-function showFirstFrame() {
-  vid.muted = true;
-  vidBg.muted = true;
-  // Play briefly then immediately pause — forces browser to render a frame
-  const tryPaint = () => {
-    vid.play().then(() => {
-      vid.pause();
-      vid.currentTime = 0.001;
-    }).catch(() => {
-      // Autoplay blocked entirely — set currentTime directly
-      try { vid.currentTime = 0.001; } catch(e) {}
+  /* ── Utility ── */
+  function goTo(id) {
+    var el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }
+  function tQA(el) { el.classList.toggle('open'); }
+
+  /* ── Reveal hero names in cascade ── */
+  function revealNames() {
+    var ids    = ['n0','n1','n2','n3','n4'];
+    var delays = [0, 300, 750, 1200, 1700];
+    ids.forEach(function(id, i) {
+      setTimeout(function() {
+        var el = document.getElementById(id);
+        if (el) el.classList.add('revealed');
+      }, delays[i]);
     });
-    vidBg.play().then(() => {
-      vidBg.pause();
-      vidBg.currentTime = 0.001;
-    }).catch(() => {
+  }
+
+  /* ── Countdown ── */
+  function startCountdown() {
+    var WED = new Date("2026-06-06T14:30:00+05:30").getTime();
+    var d = document.getElementById('cd-d');
+    var h = document.getElementById('cd-h');
+    var m = document.getElementById('cd-m');
+    var s = document.getElementById('cd-s');
+    function tick() {
+      var now = Date.now();
+      var diff = Math.max(0, WED - now);
+      var days = Math.floor(diff / 86400000); diff %= 86400000;
+      var hrs  = Math.floor(diff / 3600000);  diff %= 3600000;
+      var mins = Math.floor(diff / 60000);    diff %= 60000;
+      var secs = Math.floor(diff / 1000);
+      if (d) d.textContent = days;
+      if (h) h.textContent = hrs;
+      if (m) m.textContent = mins;
+      if (s) s.textContent = secs;
+    }
+    tick();
+    setInterval(tick, 1000);
+  }
+
+  /* ── Slideshow ── */
+  function initSlideshow() {
+    var slides   = document.querySelectorAll('.slide');
+    var dotsWrap = document.getElementById('slide-dots');
+    if (!slides.length || !dotsWrap) return;
+    var cur = 0;
+
+    slides.forEach(function(_, i) {
+      var d = document.createElement('div');
+      d.className = 'sdot' + (i === 0 ? ' on' : '');
+      d.addEventListener('click', function() { goSlide(i); });
+      dotsWrap.appendChild(d);
+    });
+
+    function goSlide(n) {
+      slides[cur].classList.remove('active');
+      dotsWrap.children[cur].classList.remove('on');
+      cur = (n + slides.length) % slides.length;
+      slides[cur].classList.add('active');
+      dotsWrap.children[cur].classList.add('on');
+    }
+    setInterval(function() { goSlide(cur + 1); }, 4500);
+  }
+
+  /* ── Phase 2: fade video out, show invitation ── */
+  function showInvitation() {
+    if (state >= 2) return;
+    state = 2;
+
+    var FADE_MS = 2500;
+    void coverVid.offsetHeight;
+    void inv.offsetHeight;
+
+    requestAnimationFrame(function() { coverVid.classList.add('fade-out'); });
+
+    setTimeout(function() {
+      requestAnimationFrame(function() {
+        inv.classList.add('show');
+        startCountdown();
+        setTimeout(revealNames, 600);
+      });
+    }, 120);
+
+    setTimeout(function() {
+      try { vid.pause(); }    catch(e) {}
+      try { vidBg.pause(); } catch(e) {}
+      try { coverVid.remove(); } catch(e) {}
+    }, FADE_MS + 200);
+  }
+
+  /* ── Phase 1: tap → play video → 2s later show invitation ── */
+  function handleTap() {
+    if (state !== 0) return;
+    state = 1;
+
+    var hint = coverVid.querySelector('.tap-hint');
+    if (hint) hint.style.opacity = '0';
+
+    vid.muted   = true;
+    vidBg.muted = true;
+
+    /* Sync blurred bg with main video */
+    function syncBg(force) {
+      var diff = Math.abs((vidBg.currentTime || 0) - (vid.currentTime || 0));
+      if (force || diff > 0.06) {
+        try { vidBg.currentTime = vid.currentTime; } catch(e) {}
+      }
+    }
+    vid.addEventListener('seeking',    function() { syncBg(true); });
+    vid.addEventListener('timeupdate', function() { syncBg(false); });
+    vid.addEventListener('play', function() {
+      try { vidBg.play(); } catch(e) {}
+      syncBg(true);
+    });
+    vid.addEventListener('pause', function() {
+      try { vidBg.pause(); } catch(e) {}
+    });
+
+    vid.currentTime = 0;
+
+    function attemptPlay() {
+      var p = vid.play();
+      if (p && p.catch) p.catch(function() { showInvitation(); });
+    }
+
+    if (vid.readyState >= 3) {
+      attemptPlay();
+    } else {
+      vid.addEventListener('canplay', attemptPlay, { once: true });
+    }
+
+    /* Show invitation 2s after tap regardless */
+    setTimeout(showInvitation, 2000);
+    vid.addEventListener('ended', showInvitation, { once: true });
+    vid.addEventListener('error', showInvitation, { once: true });
+  }
+
+  /* ── Tap handler (debounced) ── */
+  var lastTs = 0;
+  function onCoverTap(e) {
+    var now = Date.now();
+    if (now - lastTs < 700) return;
+    lastTs = now;
+    try { e.preventDefault(); }  catch(_) {}
+    try { e.stopPropagation(); } catch(_) {}
+    if (state === 0) { handleTap(); return; }
+    if (state === 1) { showInvitation(); }
+  }
+
+  /* ── Show first video frame while paused ── */
+  function paintFirstFrame() {
+    vid.muted   = true;
+    vidBg.muted = true;
+    function tryPaint() {
+      var p = vid.play();
+      if (p && p.then) {
+        p.then(function() {
+          vid.pause();
+          try { vid.currentTime = 0.001; } catch(e) {}
+        }).catch(function() {
+          try { vid.currentTime = 0.001; } catch(e) {}
+        });
+      }
       try { vidBg.currentTime = 0.001; } catch(e) {}
-    });
-  };
-  if (vid.readyState >= 2) {
-    tryPaint();
-  } else {
-    vid.addEventListener('loadeddata', tryPaint, { once: true });
+    }
+    if (vid.readyState >= 2) {
+      tryPaint();
+    } else {
+      vid.addEventListener('loadeddata', tryPaint, { once: true });
+    }
     vid.load();
     vidBg.load();
   }
-}
-showFirstFrame();
 
-/* ── Helpers ── */
-function revealNames() {
-  ['n0','n1','n2','n3','n4'].forEach((id, i) => {
-    setTimeout(() => {
-      const el = document.getElementById(id);
-      if (el) el.classList.add('revealed');
-    }, [0, 300, 750, 1200, 1700][i]);
-  });
-}
+  /* ── Boot on DOMContentLoaded ── */
+  document.addEventListener('DOMContentLoaded', function() {
+    coverVid = document.getElementById('cover-vid');
+    vid      = document.getElementById('env-vid');
+    vidBg    = document.getElementById('env-vid-bg');
+    inv      = document.getElementById('inv');
 
-/* ── Phase 2: fade cover out, fade invitation in ── */
-function showInvitation() {
-  if (state >= 2) return;
-  state = 2;
+    paintFirstFrame();
+    initSlideshow();
 
-  const FADE_MS = 2500;
-
-  void coverVid.offsetHeight;
-  void inv.offsetHeight;
-
-  requestAnimationFrame(() => { coverVid.classList.add('fade-out'); });
-
-  setTimeout(() => {
-    requestAnimationFrame(() => {
-      inv.classList.add('show');
-      startCountdown();
-      setTimeout(revealNames, 600);
-    });
-  }, 120);
-
-  setTimeout(() => {
-    try { vid.pause(); }    catch(e) {}
-    try { vidBg.pause(); } catch(e) {}
-    try { coverVid.remove(); } catch(e) {}
-  }, FADE_MS + 150);
-}
-
-/* ── Phase 1: user taps → play video → 2 s later show invitation ── */
-function handleTap() {
-  if (state !== 0) return;
-  state = 1;
-
-  const hint = coverVid.querySelector('.tap-hint');
-  if (hint) hint.style.opacity = '0';
-
-  vid.muted = true;
-  vidBg.muted = true;
-
-  /* Check if video can actually load */
-  vid.addEventListener('error', () => showInvitation(), { once: true });
-  vidBg.addEventListener('error', () => {}, { once: true });
-
-  /* Keep blurred bg video in sync */
-  function syncBg(force = false) {
-    if (!vidBg) return;
-    if (force || Math.abs((vidBg.currentTime || 0) - (vid.currentTime || 0)) > 0.06) {
-      try { vidBg.currentTime = vid.currentTime; } catch(e) {}
+    if (window.PointerEvent) {
+      coverVid.addEventListener('pointerdown', onCoverTap, { passive: false });
+    } else {
+      coverVid.addEventListener('touchstart', onCoverTap, { passive: false });
+      coverVid.addEventListener('click',      onCoverTap, { passive: false });
     }
-  }
-  vid.addEventListener('loadedmetadata', () => syncBg(true));
-  vid.addEventListener('seeking',        () => syncBg(true));
-  vid.addEventListener('timeupdate',     () => syncBg(false));
-  vid.addEventListener('play',  async () => { try { await vidBg.play(); } catch(e) {} syncBg(true); });
-  vid.addEventListener('pause', ()       => { try { vidBg.pause(); }     catch(e) {} });
-
-  vid.currentTime = 0;
-
-  function attemptPlay() {
-    vid.play().catch(() => showInvitation());
-  }
-
-  if (vid.readyState >= 3) {
-    attemptPlay();
-  } else {
-    vid.addEventListener('canplay', attemptPlay, { once: true });
-    /* If canplay never fires (e.g. file blocked), fall through to safety timeout */
-  }
-
-  /* ── KEY CHANGE: trigger invitation fade 2 s after tap (not when video ends) ── */
-  setTimeout(showInvitation, 2000);
-
-  /* Safety: also show invitation when/if video naturally ends */
-  vid.addEventListener('ended', showInvitation, { once: true });
-}
-
-/* ── Debounced tap handler ── */
-let lastGestureTs = 0;
-function onCoverTap(e) {
-  const now = Date.now();
-  if (now - lastGestureTs < 700) return;
-  lastGestureTs = now;
-  try { e.preventDefault(); }   catch(_) {}
-  try { e.stopPropagation(); }  catch(_) {}
-
-  if (state === 0) { handleTap();       return; }
-  if (state === 1) { showInvitation();         }
-}
-
-if (window.PointerEvent) {
-  coverVid.addEventListener('pointerdown', onCoverTap, { passive: false });
-} else {
-  coverVid.addEventListener('touchstart', onCoverTap, { passive: false });
-  coverVid.addEventListener('click',      onCoverTap, { passive: false });
-}
-
-/* Nav scroll */
-function goTo(id){
-  const el = document.getElementById(id);
-  if(el) el.scrollIntoView({behavior:'smooth'});
-}
-
-/* QA toggles */
-function tQA(el){ el.classList.toggle('open'); }
-
-/* Slideshow */
-function initSlideshow(){
-  const slides = document.querySelectorAll('.slide');
-  const dotsWrap = document.getElementById('slide-dots');
-  let cur = 0;
-  // Build dots
-  slides.forEach((_, i) => {
-    const d = document.createElement('div');
-    d.className = 'sdot' + (i === 0 ? ' on' : '');
-    d.addEventListener('click', () => goSlide(i));
-    dotsWrap.appendChild(d);
   });
-  function goSlide(n){
-    slides[cur].classList.remove('active');
-    dotsWrap.children[cur].classList.remove('on');
-    cur = (n + slides.length) % slides.length;
-    slides[cur].classList.add('active');
-    dotsWrap.children[cur].classList.add('on');
-  }
-  setInterval(() => goSlide(cur + 1), 4500);
-}
-initSlideshow();
 
-/* Countdown */
-const WED = new Date("2026-06-06T14:30:00+05:30").getTime();
-function startCountdown(){
-  const d=document.getElementById('cd-d'), h=document.getElementById('cd-h'),
-        m=document.getElementById('cd-m'), s=document.getElementById('cd-s');
-  function tick(){
-    const now=Date.now(); let diff=WED-now; if(diff<0) diff=0;
-    const days=Math.floor(diff/86300000); diff%=86300000;
-    const hrs=Math.floor(diff/3600000); diff%=3600000;
-    const mins=Math.floor(diff/60000); diff%=60000;
-    const secs=Math.floor(diff/1000);
-    if(d) d.textContent=days; if(h) h.textContent=hrs; if(m) m.textContent=mins; if(s) s.textContent=secs;
-  }
-  tick(); setInterval(tick,1000);
-}
-
-
+  /* Expose globals needed by inline HTML handlers */
+  window.goTo = goTo;
+  window.tQA  = tQA;
+})();
 </script>
 </body>
 </html>
