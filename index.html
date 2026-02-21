@@ -1,3 +1,6 @@
+Wedding final updated v13 · HTML
+Copy
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,7 +30,7 @@ html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;bac
 #cover-vid{
   opacity:1;pointer-events:all;
   transition:opacity 2.5s ease-in-out;
-  background:#000;
+  background:transparent;
   will-change:opacity;
 }
 #cover-vid video{display:block;}
@@ -63,16 +66,18 @@ html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;bac
 .cover.fade-out{opacity:0;pointer-events:none;}
 
 .tap-hint{
-  position:absolute;left:50%;top:66%;
+  position:absolute;left:50%;bottom:8%;
   transform:translateX(-50%);
-  font-family:"Cormorant Garamond",serif;
-  font-size:clamp(18px,4.8vw,28px);
-  letter-spacing:.06em;
-  color:rgba(245,237,224,.88);
-  text-shadow:0 2px 20px rgba(0,0,0,.55);
+  font-family:"Cinzel",serif;
+  font-size:clamp(10px,3vw,13px);
+  letter-spacing:.2em;
+  color:rgba(245,237,224,.75);
+  text-shadow:0 2px 20px rgba(0,0,0,.7);
   pointer-events:none;
-  opacity:.95;
+  white-space:nowrap;
+  animation:ph 2.2s ease-in-out infinite;
 }
+@keyframes ph{0%,100%{opacity:.6}50%{opacity:1}}
 
 /* ── INVITATION ──────────────────────────────────────── */
 #inv{
@@ -255,7 +260,7 @@ html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;bac
     </video>
   </div>
 
-  <div class="tap-hint">Tap to open invitation</div>
+  <div class="tap-hint">✦ &nbsp; Tap anywhere to open &nbsp; ✦</div>
 </div>
 
 <!-- ═════ LAYER 3: Full invitation ═════ -->
@@ -394,6 +399,36 @@ const vid      = document.getElementById('env-vid');
 const vidBg    = document.getElementById('env-vid-bg');
 const inv      = document.getElementById('inv');
 
+/* ── Show first frame of video on load so user sees video, not black ── */
+function showFirstFrame() {
+  vid.muted = true;
+  vidBg.muted = true;
+  // Play briefly then immediately pause — forces browser to render a frame
+  const tryPaint = () => {
+    vid.play().then(() => {
+      vid.pause();
+      vid.currentTime = 0.001;
+    }).catch(() => {
+      // Autoplay blocked entirely — set currentTime directly
+      try { vid.currentTime = 0.001; } catch(e) {}
+    });
+    vidBg.play().then(() => {
+      vidBg.pause();
+      vidBg.currentTime = 0.001;
+    }).catch(() => {
+      try { vidBg.currentTime = 0.001; } catch(e) {}
+    });
+  };
+  if (vid.readyState >= 2) {
+    tryPaint();
+  } else {
+    vid.addEventListener('loadeddata', tryPaint, { once: true });
+    vid.load();
+    vidBg.load();
+  }
+}
+showFirstFrame();
+
 /* ── Helpers ── */
 function revealNames() {
   ['n0','n1','n2','n3','n4'].forEach((id, i) => {
@@ -441,10 +476,6 @@ function handleTap() {
 
   vid.muted = true;
   vidBg.muted = true;
-
-  /* Force reload to ensure browser has latest muted state */
-  vid.load();
-  vidBg.load();
 
   /* Check if video can actually load */
   vid.addEventListener('error', () => showInvitation(), { once: true });
