@@ -1,10 +1,13 @@
+Wedding final updated v13 · HTML
+Copy
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>Ashley & Peter — Wedding Invitation</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Great+Vibes&family=Cinzel:wght@400;500&family=IM+Fell+English:ital@1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Great+Vibes&family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -15,16 +18,6 @@
 }
 html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;background:#1e2a10}
 
-/* ORNATE INITIAL A */
-.ornate-a{
-  font-family:"IM Fell English",serif;
-  font-style:italic;
-  font-size:1.18em;
-  letter-spacing:-.01em;
-  display:inline-block;
-  transform:scaleX(1.08);
-  transform-origin:left center;
-}
 
 /* ── COVER STACK ─────────────────────────────────────── */
 .cover{
@@ -251,11 +244,11 @@ html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;bac
 <!-- ═════ LAYER 2: Opening video ═════ -->
 <div class="cover" id="cover-vid" aria-label="Open invitation">
   <div class="vid-stack">
-    <video id="env-vid-bg" playsinline muted preload="auto" disablePictureInPicture aria-hidden="true">
+    <video id="env-vid-bg" playsinline muted preload="auto" disablePictureInPicture aria-hidden="true" webkit-playsinline x5-playsinline>
       <source src="Green_Envelope_Seal.mp4" type="video/mp4">
     </video>
 
-    <video id="env-vid" playsinline muted preload="auto" disablePictureInPicture>
+    <video id="env-vid" playsinline muted preload="auto" disablePictureInPicture webkit-playsinline x5-playsinline>
       <source src="Green_Envelope_Seal.mp4" type="video/mp4">
     </video>
   </div>
@@ -316,7 +309,7 @@ html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;bac
     <div class="hero-ov"></div>
     <div class="hero-text">
       <span class="ht-label" id="n0">You are invited to celebrate</span>
-      <span class="ht-name"  id="n1"><span class="ornate-a">A</span>shley</span>
+      <span class="ht-name"  id="n1">Ashley</span>
       <span class="ht-amp"   id="n2">&amp;</span>
       <span class="ht-name"  id="n3">Peter</span>
       <div class="div"><div class="dl"></div><div class="dd"></div><div class="dl"></div></div>
@@ -410,7 +403,7 @@ html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;bac
   </section>
 
   <footer class="footer">
-    <div class="fn"><span class="ornate-a">A</span>shley &amp; Peter</div>
+    <div class="fn">Ashley &amp; Peter</div>
     <p class="fd">June 6, 2026 &nbsp;✦&nbsp; Kottayam, Kerala</p>
     <div class="fdv"></div>
     <p class="fq">"…writing a forever that once began with a simple hello." 🤎</p>
@@ -478,6 +471,15 @@ function handleTap() {
   if (hint) hint.style.opacity = '0';
 
   vid.muted = true;
+  vidBg.muted = true;
+
+  /* Force reload to ensure browser has latest muted state */
+  vid.load();
+  vidBg.load();
+
+  /* Check if video can actually load */
+  vid.addEventListener('error', () => showInvitation(), { once: true });
+  vidBg.addEventListener('error', () => {}, { once: true });
 
   /* Keep blurred bg video in sync */
   function syncBg(force = false) {
@@ -493,7 +495,17 @@ function handleTap() {
   vid.addEventListener('pause', ()       => { try { vidBg.pause(); }     catch(e) {} });
 
   vid.currentTime = 0;
-  vid.play().catch(() => showInvitation());   // blocked → skip straight to invite
+
+  function attemptPlay() {
+    vid.play().catch(() => showInvitation());
+  }
+
+  if (vid.readyState >= 3) {
+    attemptPlay();
+  } else {
+    vid.addEventListener('canplay', attemptPlay, { once: true });
+    /* If canplay never fires (e.g. file blocked), fall through to safety timeout */
+  }
 
   /* ── KEY CHANGE: trigger invitation fade 2 s after tap (not when video ends) ── */
   setTimeout(showInvitation, 2000);
