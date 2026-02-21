@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>Ashley & Peter — Wedding Invitation</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Great+Vibes&family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Great+Vibes&family=Cinzel:wght@400;500&family=IM+Fell+English:ital@1&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -15,8 +15,20 @@
 }
 html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;background:#1e2a10}
 
+/* ORNATE INITIAL A */
+.ornate-a{
+  font-family:"IM Fell English",serif;
+  font-style:italic;
+  font-size:1.18em;
+  letter-spacing:-.01em;
+  display:inline-block;
+  transform:scaleX(1.08);
+  transform-origin:left center;
+}
+
 /* ── COVER STACK ─────────────────────────────────────── */
 .cover{
+  opacity:1;
   position:fixed;inset:0;z-index:30;
   cursor:pointer;
   transition:opacity 2.5s ease-in-out;
@@ -79,6 +91,7 @@ html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;bac
 /* ── INVITATION ──────────────────────────────────────── */
 #inv{
   position:fixed;inset:0;z-index:10;
+  background:rgba(0,0,0,0.55);
   height:100dvh;max-height:100dvh;
   overflow-y:auto;overflow-x:hidden;
   touch-action:pan-y;
@@ -239,11 +252,11 @@ html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;bac
 <div class="cover" id="cover-vid" aria-label="Open invitation">
   <div class="vid-stack">
     <video id="env-vid-bg" playsinline muted preload="auto" disablePictureInPicture aria-hidden="true">
-      <source src="envelope-open.mp4" type="video/mp4">
+      <source src="Green_Envelope_Seal.mp4" type="video/mp4">
     </video>
 
     <video id="env-vid" playsinline muted preload="auto" disablePictureInPicture>
-      <source src="envelope-open.mp4" type="video/mp4">
+      <source src="Green_Envelope_Seal.mp4" type="video/mp4">
     </video>
   </div>
 
@@ -303,7 +316,7 @@ html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;bac
     <div class="hero-ov"></div>
     <div class="hero-text">
       <span class="ht-label" id="n0">You are invited to celebrate</span>
-      <span class="ht-name"  id="n1">Ashley</span>
+      <span class="ht-name"  id="n1"><span class="ornate-a">A</span>shley</span>
       <span class="ht-amp"   id="n2">&amp;</span>
       <span class="ht-name"  id="n3">Peter</span>
       <div class="div"><div class="dl"></div><div class="dd"></div><div class="dl"></div></div>
@@ -397,7 +410,7 @@ html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;bac
   </section>
 
   <footer class="footer">
-    <div class="fn">Ashley &amp; Peter</div>
+    <div class="fn"><span class="ornate-a">A</span>shley &amp; Peter</div>
     <p class="fd">June 6, 2026 &nbsp;✦&nbsp; Kottayam, Kerala</p>
     <div class="fdv"></div>
     <p class="fq">"…writing a forever that once began with a simple hello." 🤎</p>
@@ -407,146 +420,106 @@ html,body{height:100%;overflow:hidden;font-family:"Cormorant Garamond",serif;bac
 <script>
 /* ─────────────────────────────────────────
    State machine
-   0 = cover (video paused)
+   0 = cover (video paused, waiting for tap)
    1 = video playing
-   2 = invitation
+   2 = invitation visible
 ───────────────────────────────────────── */
 let state = 0;
 const coverVid = document.getElementById('cover-vid');
-const vid = document.getElementById('env-vid');
-  const vidBg = document.getElementById('env-vid-bg');
+const vid      = document.getElementById('env-vid');
+const vidBg    = document.getElementById('env-vid-bg');
 const inv      = document.getElementById('inv');
 
-
-// Ensure the first video frame is visible on load (no poster image)
-document.addEventListener('DOMContentLoaded', () => {
-  try{
-    vid.load();
-    const paint = () => {
-      try{
-        // nudge to render a frame, then pause
-        if (vid.readyState >= 2) {
-          const t = Math.min(0.03, (vid.duration || 0.03));
-          vid.currentTime = t;
-          vid.pause();
-        }
-      }catch(e){}
-    };
-    vid.addEventListener('loadeddata', paint, {once:true});
-  }catch(e){}
-});
-
-
-/* Staggered name cascade */
+/* ── Helpers ── */
 function revealNames() {
-  const ids    = ['n0','n1','n2','n3','n4'];
-  const delays = [0, 300, 750, 1200, 1700];
-  ids.forEach((id, i) => setTimeout(() => {
-    const el = document.getElementById(id);
-    if (el) el.classList.add('revealed');
-  }, delays[i]));
+  ['n0','n1','n2','n3','n4'].forEach((id, i) => {
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('revealed');
+    }, [0, 300, 750, 1200, 1700][i]);
+  });
 }
 
-/* Phase 2 – fade both covers, reveal invitation */
+/* ── Phase 2: fade cover out, fade invitation in ── */
 function showInvitation() {
   if (state >= 2) return;
   state = 2;
 
-  const FADE_MS = 2500;     // slow, noticeable fade
-  const INV_DELAY = 0;      // start crossfade immediately
+  const FADE_MS = 2500;
 
-  // Trigger fade out
-  coverVid.classList.add('fade-out');
+  void coverVid.offsetHeight;
+  void inv.offsetHeight;
 
-  // Ensure the browser registers the fade-out before fading in the invitation (prevents "sudden switch")
-  requestAnimationFrame(() => {
-    setTimeout(() => {
+  requestAnimationFrame(() => { coverVid.classList.add('fade-out'); });
+
+  setTimeout(() => {
+    requestAnimationFrame(() => {
       inv.classList.add('show');
       startCountdown();
       createBokeh();
       createPetals();
       setTimeout(revealNames, 600);
-    }, INV_DELAY);
-  });
+    });
+  }, 120);
 
-  // Remove the cover only after the fade completes (so motion stays visible during the fade)
   setTimeout(() => {
-    try { vid.pause(); } catch(e) {}
+    try { vid.pause(); }    catch(e) {}
     try { vidBg.pause(); } catch(e) {}
     try { coverVid.remove(); } catch(e) {}
-  }, FADE_MS + 120);
+  }, FADE_MS + 150);
 }
 
-/* Phase 1 – tap screen → play video */
+/* ── Phase 1: user taps → play video → 2 s later show invitation ── */
 function handleTap() {
   if (state !== 0) return;
   state = 1;
 
-  // Start the opening video
   const hint = coverVid.querySelector('.tap-hint');
   if (hint) hint.style.opacity = '0';
 
-  // Play (keep muted for reliable mobile playback)
   vid.muted = true;
 
-  // Keep the blurred background video tightly synced with the main video
-  function syncBg(force=false){
+  /* Keep blurred bg video in sync */
+  function syncBg(force = false) {
     if (!vidBg) return;
-    const d = Math.abs((vidBg.currentTime || 0) - (vid.currentTime || 0));
-    if (force || d > 0.06){
+    if (force || Math.abs((vidBg.currentTime || 0) - (vid.currentTime || 0)) > 0.06) {
       try { vidBg.currentTime = vid.currentTime; } catch(e) {}
     }
   }
   vid.addEventListener('loadedmetadata', () => syncBg(true));
-  vid.addEventListener('seeking', () => syncBg(true));
-  vid.addEventListener('timeupdate', () => syncBg(false));
-  vid.addEventListener('play', async () => { try { await vidBg.play(); } catch(e) {} syncBg(true); });
-  vid.addEventListener('pause', () => { try { vidBg.pause(); } catch(e) {} });
+  vid.addEventListener('seeking',        () => syncBg(true));
+  vid.addEventListener('timeupdate',     () => syncBg(false));
+  vid.addEventListener('play',  async () => { try { await vidBg.play(); } catch(e) {} syncBg(true); });
+  vid.addEventListener('pause', ()       => { try { vidBg.pause(); }     catch(e) {} });
 
   vid.currentTime = 0;
-  vid.play().catch(() => {
-    // Blocked — skip straight to invitation
-    showInvitation();
-  });
+  vid.play().catch(() => showInvitation());   // blocked → skip straight to invite
 
-  // When video ends → reveal invitation
-  vid.addEventListener('ended', showInvitation, {once: true});
+  /* ── KEY CHANGE: trigger invitation fade 2 s after tap (not when video ends) ── */
+  setTimeout(showInvitation, 2000);
 
-  // Safety timeout — if video stalls
-  setTimeout(() => { if (state === 1) showInvitation(); }, 3000);
+  /* Safety: also show invitation when/if video naturally ends */
+  vid.addEventListener('ended', showInvitation, { once: true });
 }
 
-// Tap cover: play on first user gesture (avoid double-fire on mobile)
+/* ── Debounced tap handler ── */
 let lastGestureTs = 0;
-function onCoverTap(e){
+function onCoverTap(e) {
   const now = Date.now();
-  // Some mobile browsers fire pointerdown + click; ignore duplicates within 700ms
   if (now - lastGestureTs < 700) return;
   lastGestureTs = now;
+  try { e.preventDefault(); }   catch(_) {}
+  try { e.stopPropagation(); }  catch(_) {}
 
-  if (e){
-    try{ e.preventDefault(); }catch(_){}
-    try{ e.stopPropagation(); }catch(_){}
-  }
-
-  if (state === 0){
-    handleTap();
-    // After starting playback, allow a later intentional second tap to skip (but not immediate duplicates)
-    return;
-  }
-
-  // Optional: if user taps again later, skip to invite
-  if (state === 1){
-    showInvitation();
-  }
+  if (state === 0) { handleTap();       return; }
+  if (state === 1) { showInvitation();         }
 }
 
-// Prefer Pointer Events when available; otherwise fall back to touch/click
-if (window.PointerEvent){
-  coverVid.addEventListener('pointerdown', onCoverTap, {passive:false});
+if (window.PointerEvent) {
+  coverVid.addEventListener('pointerdown', onCoverTap, { passive: false });
 } else {
-  coverVid.addEventListener('touchstart', onCoverTap, {passive:false});
-  coverVid.addEventListener('click', onCoverTap, {passive:false});
+  coverVid.addEventListener('touchstart', onCoverTap, { passive: false });
+  coverVid.addEventListener('click',      onCoverTap, { passive: false });
 }
 
 /* QA toggles */
