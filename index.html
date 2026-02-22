@@ -899,6 +899,7 @@ body{
   <section class="rsvp" id="rsvp">
     <p class="sl" style="color:var(--sage)">Join Us On Our Special Day</p>
     <h2 class="rsvp-title">RSVP</h2>
+    <p class="rsvp-sub">Kindly reply by March 15th, 2026</p>
     <div class="rsvp-form" id="rsvp-form">
       <div class="rf-group">
         <label class="rf-label" for="rf-name">Full Name</label>
@@ -921,14 +922,14 @@ body{
       <div class="rf-group">
         <span class="rf-label">I am attending from the</span>
         <div class="rf-side">
-          <button class="rf-side-btn" type="button" onclick="chooseSide(this,'Bride\\'s Side')">👰 Bride's Side</button>
-          <button class="rf-side-btn" type="button" onclick="chooseSide(this,'Groom\\'s Side')">🤵 Groom's Side</button>
+          <button class="rf-side-btn" onclick="chooseSide(this,'Bride\'s Side')">👰 Bride's Side</button>
+          <button class="rf-side-btn" onclick="chooseSide(this,'Groom\'s Side')">🤵 Groom's Side</button>
         </div>
       </div>
       <div class="rf-msg" id="rf-msg"></div>
-      <button class="rf-submit" type="button" onclick="submitRSVP()">✦ &nbsp; Confirm My Attendance &nbsp; ✦</button>
+      <button class="rf-submit" onclick="submitRSVP()">✦ &nbsp; Confirm My Attendance &nbsp; ✦</button>
     </div>
-    <button class="rsvp-export" type="button" onclick="exportRSVP()" id="rsvp-export-btn" style="display:none">⬇ Download Guest List</button>
+    <button class="rsvp-export" onclick="exportRSVP()" id="rsvp-export-btn" style="display:none">⬇ Download Guest List</button>
   </section>
 
   <!-- Q&A -->
