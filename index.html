@@ -8,6 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Ashley &amp; Peter — Wedding Invitation</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Great+Vibes&family=Allura&family=Pinyon+Script&family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
+
 <style>
 /* ── RESET ─────────────────────────────────────────────── */
 *,*::before,*::after{-webkit-box-sizing:border-box;box-sizing:border-box;margin:0;padding:0}
@@ -216,17 +217,6 @@ body{
   transform:translateY(20px);
   -webkit-transition:opacity .9s ease,-webkit-transform .9s ease;
   transition:opacity .9s ease,transform .9s ease;
-}
-.ht-label{
-  font-family:"Cinzel",serif;
-  font-size:11px;
-  font-size:clamp(8px,2.2vw,11px);
-  letter-spacing:.45em;
-  color:rgba(245,235,210,.92);
-  text-transform:uppercase;
-  margin-bottom:1.2rem;
-  display:block;
-  text-shadow:0 1px 10px rgba(0,0,0,.6);
 }
 .ht-name{
   font-family:"Allura",cursive;
@@ -475,7 +465,7 @@ body{
 .qch{color:var(--gold);font-size:14px;-webkit-transition:-webkit-transform .3s;transition:transform .3s;-ms-flex-negative:0;flex-shrink:0}
 .qi.open .qch{-webkit-transform:rotate(180deg);transform:rotate(180deg)}
 .qa-ans{max-height:0;overflow:hidden;-webkit-transition:max-height .4s ease,padding .3s ease;transition:max-height .4s ease,padding .3s ease;padding:0 1.2rem}
-.qi.open .qa-ans{max-height:600px;padding:0 1.2rem 1rem}
+.qi.open .qa-ans{max-height:900px;padding:0 1.2rem 1rem}
 .qa-ans p{font-family:"Cormorant Garamond",serif;font-size:15px;color:rgba(245,237,224,.82);line-height:1.75}
 
 /* ── PHOTOS ────────────────────────────────────────────── */
@@ -604,6 +594,74 @@ body{
 #music-btn:active{-webkit-transform:scale(.88);transform:scale(.88)}
 #music-btn.muted{opacity:.45;border-color:rgba(200,170,100,.2)}
 
+/* ── TAP TO OPEN OVERLAY ───────────────────────────────── */
+#tap-overlay{
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  z-index:10;
+  display:-webkit-box;display:-ms-flexbox;display:flex;
+  -webkit-box-orient:vertical;-webkit-box-direction:normal;
+  -ms-flex-direction:column;flex-direction:column;
+  -webkit-box-align:center;-ms-flex-align:center;align-items:center;
+  -webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  background:rgba(0,0,0,.18);
+}
+#tap-overlay .to-circle{
+  width:80px;height:80px;border-radius:50%;
+  background:rgba(255,255,255,.12);
+  border:2px solid rgba(245,237,224,.6);
+  display:-webkit-box;display:-ms-flexbox;display:flex;
+  -webkit-box-align:center;-ms-flex-align:center;align-items:center;
+  -webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;
+  position:relative;
+  -webkit-box-shadow:0 0 40px rgba(0,0,0,.3);box-shadow:0 0 40px rgba(0,0,0,.3);
+}
+#tap-overlay .to-circle::before,
+#tap-overlay .to-circle::after{
+  content:'';position:absolute;border-radius:50%;
+  border:2px solid rgba(245,237,224,.35);
+}
+#tap-overlay .to-circle::before{
+  inset:-14px;
+  -webkit-animation:to-pulse 2s ease-out infinite;
+  animation:to-pulse 2s ease-out infinite;
+}
+#tap-overlay .to-circle::after{
+  inset:-28px;
+  -webkit-animation:to-pulse 2s ease-out .6s infinite;
+  animation:to-pulse 2s ease-out .6s infinite;
+}
+@-webkit-keyframes to-pulse{
+  0%{opacity:.7;-webkit-transform:scale(1);transform:scale(1)}
+  100%{opacity:0;-webkit-transform:scale(1.3);transform:scale(1.3)}
+}
+@keyframes to-pulse{
+  0%{opacity:.7;transform:scale(1)}
+  100%{opacity:0;transform:scale(1.3)}
+}
+#tap-overlay .to-play{
+  width:0;height:0;
+  border-top:18px solid transparent;
+  border-bottom:18px solid transparent;
+  border-left:30px solid rgba(245,237,224,.9);
+  margin-left:6px;
+  -webkit-filter:drop-shadow(0 2px 6px rgba(0,0,0,.4));
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,.4));
+}
+#tap-overlay .to-label{
+  margin-top:28px;
+  font-family:"Cinzel",serif;
+  font-size:11px;letter-spacing:.35em;
+  color:rgba(245,237,224,.8);
+  text-transform:uppercase;
+  text-shadow:0 1px 8px rgba(0,0,0,.7);
+}
+#tap-overlay.hidden{
+  opacity:0;pointer-events:none;
+  -webkit-transition:opacity .5s ease;transition:opacity .5s ease;
+}
+
 /* ── FOOTER ────────────────────────────────────────────── */
 .footer{background:#1a1f10;padding:3.5rem 2rem;text-align:center}
 .fn{font-family:"Allura",cursive;font-size:52px;font-size:clamp(34px,10vw,52px);color:var(--gold);margin-bottom:.6rem}
@@ -612,6 +670,7 @@ body{
 .fq{font-family:"Cormorant Garamond",serif;font-size:14px;color:rgba(245,237,224,.4);font-style:italic;max-width:280px;margin:0 auto;line-height:1.7}
 </style>
 </head>
+
 <body>
 
 <!-- ═════ VIDEO COVER ═════ -->
@@ -637,6 +696,9 @@ body{
       <source src="Green_Envelope_Seal.mp4" type="video/mp4">
     </video>
   </div>
+
+  <!-- TAP TO OPEN -->
+  <div id="tap-overlay" onclick="onCoverTap()"></div>
 </div>
 
 <!-- ═════ INVITATION ═════ -->
@@ -842,14 +904,14 @@ body{
       <div class="rf-group">
         <span class="rf-label">I am attending from the</span>
         <div class="rf-side">
-          <button class="rf-side-btn" onclick="chooseSide(this,'Bride\'s Side')">👰 Bride's Side</button>
-          <button class="rf-side-btn" onclick="chooseSide(this,'Groom\'s Side')">🤵 Groom's Side</button>
+          <button class="rf-side-btn" type="button" onclick="chooseSide(this,'Bride\\'s Side')">👰 Bride's Side</button>
+          <button class="rf-side-btn" type="button" onclick="chooseSide(this,'Groom\\'s Side')">🤵 Groom's Side</button>
         </div>
       </div>
       <div class="rf-msg" id="rf-msg"></div>
-      <button class="rf-submit" onclick="submitRSVP()">✦ &nbsp; Confirm My Attendance &nbsp; ✦</button>
+      <button class="rf-submit" type="button" onclick="submitRSVP()">✦ &nbsp; Confirm My Attendance &nbsp; ✦</button>
     </div>
-    <button class="rsvp-export" onclick="exportRSVP()" id="rsvp-export-btn" style="display:none">⬇ Download Guest List</button>
+    <button class="rsvp-export" type="button" onclick="exportRSVP()" id="rsvp-export-btn" style="display:none">⬇ Download Guest List</button>
   </section>
 
   <!-- Q&A -->
@@ -874,7 +936,7 @@ body{
         <div class="palette-grid">
           <div class="pc"><img src="dusty-rose.jpg" class="pc-img" alt="Dusty Rose"><span class="pc-label">Dusty Rose</span></div>
           <div class="pc"><img src="soft-blush.jpg" class="pc-img" alt="Soft Blush Pink"><span class="pc-label">Soft Blush Pink</span></div>
-          <div class="pc"><img src="light-lavender.jpg" class="pc-img" alt="Light Lavender"><span class="pc-label">Champagne Beige</span></div>
+          <div class="pc"><img src="light-lavender.jpg" class="pc-img" alt="Light Lavender"><span class="pc-label">Light Lavender</span></div>
           <div class="pc"><img src="olive-green.jpg" class="pc-img" alt="Olive Green"><span class="pc-label">Olive Green</span></div>
           <div class="pc"><img src="soft-ivory.jpg" class="pc-img" alt="Soft Ivory"><span class="pc-label">Soft Ivory</span></div>
           <div class="pc"><img src="peach.jpg" class="pc-img" alt="Peach"><span class="pc-label">Peach</span></div>
@@ -893,29 +955,29 @@ body{
     <p class="sl" style="color:var(--sage)">A Glimpse of Us</p>
     <h2 class="photos-title">Our Photos</h2>
     <div class="photo-grid">
-      <div class="photo-card" onclick="openLightbox(1)"><img src="image1.png" alt="Ashley and Peter" loading="lazy"></div>
-      <div class="photo-card" onclick="openLightbox(2)"><img src="image2.png" alt="Ashley and Peter" loading="lazy"></div>
-      <div class="photo-card" onclick="openLightbox(3)"><img src="image3.png" alt="Ashley and Peter" loading="lazy"></div>
-      <div class="photo-card" onclick="openLightbox(4)"><img src="image4.png" alt="Ashley and Peter" loading="lazy"></div>
-      <div class="photo-card" onclick="openLightbox(5)"><img src="image5.png" alt="Ashley and Peter" loading="lazy"></div>
-      <div class="photo-card" onclick="openLightbox(6)"><img src="image7.png" alt="Ashley and Peter" loading="lazy"></div>
-      <div class="photo-card" onclick="openLightbox(7)"><img src="image8.png" alt="Ashley and Peter" loading="lazy"></div>
-      <div class="photo-card" onclick="openLightbox(8)"><img src="image9.png" alt="Ashley and Peter" loading="lazy"></div>
-      <div class="photo-card" onclick="openLightbox(9)"><img src="image10.png" alt="Ashley and Peter" loading="lazy"></div>
-      <div class="photo-card" onclick="openLightbox(10)"><img src="image11.png" alt="Ashley and Peter" loading="lazy"></div>
-      <div class="photo-card" onclick="openLightbox(11)"><img src="image12.png" alt="Ashley and Peter" loading="lazy"></div>
-      <div class="photo-card" onclick="openLightbox(12)"><img src="image13.png" alt="Ashley and Peter" loading="lazy"></div>
-      <div class="photo-card" onclick="openLightbox(13)"><img src="image14.png" alt="Ashley and Peter" loading="lazy"></div>
-      <div class="photo-card" onclick="openLightbox(14)"><img src="image15.png" alt="Ashley and Peter" loading="lazy"></div>
+      <div class="photo-card" onclick="openLightbox(0)"><img src="image1.png" alt="Ashley and Peter" loading="lazy"></div>
+      <div class="photo-card" onclick="openLightbox(1)"><img src="image2.png" alt="Ashley and Peter" loading="lazy"></div>
+      <div class="photo-card" onclick="openLightbox(2)"><img src="image3.png" alt="Ashley and Peter" loading="lazy"></div>
+      <div class="photo-card" onclick="openLightbox(3)"><img src="image4.png" alt="Ashley and Peter" loading="lazy"></div>
+      <div class="photo-card" onclick="openLightbox(4)"><img src="image5.png" alt="Ashley and Peter" loading="lazy"></div>
+      <div class="photo-card" onclick="openLightbox(5)"><img src="image7.png" alt="Ashley and Peter" loading="lazy"></div>
+      <div class="photo-card" onclick="openLightbox(6)"><img src="image8.png" alt="Ashley and Peter" loading="lazy"></div>
+      <div class="photo-card" onclick="openLightbox(7)"><img src="image9.png" alt="Ashley and Peter" loading="lazy"></div>
+      <div class="photo-card" onclick="openLightbox(8)"><img src="image10.png" alt="Ashley and Peter" loading="lazy"></div>
+      <div class="photo-card" onclick="openLightbox(9)"><img src="image11.png" alt="Ashley and Peter" loading="lazy"></div>
+      <div class="photo-card" onclick="openLightbox(10)"><img src="image12.png" alt="Ashley and Peter" loading="lazy"></div>
+      <div class="photo-card" onclick="openLightbox(11)"><img src="image13.png" alt="Ashley and Peter" loading="lazy"></div>
+      <div class="photo-card" onclick="openLightbox(12)"><img src="image14.png" alt="Ashley and Peter" loading="lazy"></div>
+      <div class="photo-card" onclick="openLightbox(13)"><img src="image15.png" alt="Ashley and Peter" loading="lazy"></div>
     </div>
   </section>
 
   <!-- Lightbox -->
   <div class="lightbox" id="lightbox">
-    <button class="lb-close" onclick="closeLightbox()" aria-label="Close">✕</button>
-    <button class="lb-prev" onclick="lbNav(-1)" aria-label="Previous">&#8249;</button>
+    <button class="lb-close" type="button" onclick="closeLightbox()" aria-label="Close">✕</button>
+    <button class="lb-prev" type="button" onclick="lbNav(-1)" aria-label="Previous">&#8249;</button>
     <img id="lb-img" src="" alt="Ashley and Peter">
-    <button class="lb-next" onclick="lbNav(1)" aria-label="Next">&#8250;</button>
+    <button class="lb-next" type="button" onclick="lbNav(1)" aria-label="Next">&#8250;</button>
   </div>
 
   <!-- FOOTER -->
@@ -926,13 +988,10 @@ body{
     <p class="fq">"…writing a forever that once began with a simple hello." 🤎</p>
   </footer>
 
-  <!-- MUSIC -->
-  <video id="bg-music"
-    loop muted playsinline preload="auto"
-    style="position:fixed;width:0;height:0;opacity:0;pointer-events:none"
-    webkit-playsinline>
+  <!-- MUSIC (✅ use AUDIO element) -->
+  <audio id="bg-music" loop preload="auto">
     <source src="Ballerina.mp3" type="audio/mpeg">
-  </video>
+  </audio>
 
   <button id="music-btn" aria-label="Toggle music" onclick="toggleMusic()">🎵</button>
 </div>
@@ -941,31 +1000,77 @@ body{
 (function () {
 
   /* ── State ── */
-  var state = 0; /* 0=video, 1=invitation */
+  var state = 0; /* 0=cover, 1=invitation */
   var coverVid, vid, vidBg, inv, bgMusic, musicBtn;
-  var musicMuted = false;
   var selectedSide = '';
 
-  /* ── Music: user-gesture start (mobile safe) ── */
-  var musicStarted = false;
+  /* ── Music state ── */
+  var musicUnlocked = false; // audio successfully started at least once via user gesture
+  var userMuted = false;     // user explicitly muted using button
+  var fadeTimer = null;
 
-  function startMusicFromGesture() {
-    if (!bgMusic || musicStarted) return;
+  function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
 
-    // Ensure unmuted + set volume, then play
-    bgMusic.muted = false;
-    bgMusic.volume = 0.5;
+  function stopFade(){
+    if (fadeTimer){ clearInterval(fadeTimer); fadeTimer = null; }
+  }
 
-    bgMusic.play().then(function () {
-      musicStarted = true;
-      if (musicBtn) musicBtn.style.display = 'flex';
-      // Remove listeners once started
-      document.removeEventListener('pointerdown', startMusicFromGesture);
-      document.removeEventListener('touchstart', startMusicFromGesture);
-      document.removeEventListener('keydown', startMusicFromGesture);
-    }).catch(function () {
-      // If blocked, user may need one more tap (common on iOS sometimes)
+  function setBtnUI(){
+    if (!musicBtn) return;
+    musicBtn.style.display = 'flex';
+    if (userMuted){
+      musicBtn.textContent = '🔇';
+      musicBtn.classList.add('muted');
+    } else {
+      musicBtn.textContent = '🎵';
+      musicBtn.classList.remove('muted');
+    }
+  }
+
+  function unlockMusic(){
+    if (!bgMusic) return Promise.resolve(false);
+    if (musicUnlocked) return Promise.resolve(true);
+
+    // iOS safest: start muted
+    bgMusic.muted = true;
+    bgMusic.volume = 0;
+
+    var p = bgMusic.play();
+    return Promise.resolve(p).then(function(){
+      musicUnlocked = true;
+      return true;
+    }).catch(function(){
+      musicUnlocked = false;
+      return false;
     });
+  }
+
+  function muteMusicHard(){
+    if (!bgMusic) return;
+    stopFade();
+    bgMusic.muted = true;
+    bgMusic.volume = 0;
+    try { bgMusic.pause(); } catch(e){}
+  }
+
+  function fadeInMusic(targetVol){
+    if (!bgMusic) return;
+    if (!musicUnlocked) return;
+    if (userMuted) { muteMusicHard(); return; }
+
+    stopFade();
+    try { bgMusic.play(); } catch(e){}
+    bgMusic.muted = false;
+
+    // start from current volume (or 0) and fade up
+    bgMusic.volume = clamp(bgMusic.volume || 0, 0, targetVol);
+
+    fadeTimer = setInterval(function(){
+      if (userMuted){ stopFade(); muteMusicHard(); return; }
+      var next = clamp((bgMusic.volume || 0) + 0.03, 0, targetVol);
+      bgMusic.volume = next;
+      if (next >= targetVol - 0.001) stopFade();
+    }, 80);
   }
 
   /* ── Scroll helper ── */
@@ -1017,12 +1122,14 @@ body{
     var dotsWrap = document.getElementById('slide-dots');
     if (!slides.length || !dotsWrap) return;
     var cur = 0;
+
     slides.forEach(function (_, i) {
       var dot = document.createElement('div');
       dot.className = 'sdot' + (i === 0 ? ' on' : '');
       dot.addEventListener('click', function () { goSlide(i); });
       dotsWrap.appendChild(dot);
     });
+
     function goSlide(n) {
       slides[cur].classList.remove('active');
       dotsWrap.children[cur].classList.remove('on');
@@ -1030,26 +1137,27 @@ body{
       slides[cur].classList.add('active');
       dotsWrap.children[cur].classList.add('on');
     }
+
     setInterval(function () { goSlide(cur + 1); }, 4500);
   }
 
   /* ── Music toggle (button) ── */
   function toggleMusic() {
-    if (!bgMusic) return;
+    unlockMusic().then(function(ok){
+      if (!ok) return;
 
-    // If user hasn't started it yet, try starting on this tap
-    if (!musicStarted) startMusicFromGesture();
+      userMuted = !userMuted;
+      setBtnUI();
 
-    if (musicMuted) {
-      bgMusic.muted  = false;
-      bgMusic.volume = 0.5;
-      musicMuted = false;
-      if (musicBtn) { musicBtn.textContent = '🎵'; musicBtn.classList.remove('muted'); }
-    } else {
-      bgMusic.muted = true;
-      musicMuted = true;
-      if (musicBtn) { musicBtn.textContent = '🔇'; musicBtn.classList.add('muted'); }
-    }
+      if (userMuted){
+        muteMusicHard();
+      } else {
+        // resume audible playback
+        bgMusic.muted = false;
+        bgMusic.volume = 0;
+        fadeInMusic(0.5);
+      }
+    });
   }
 
   /* ── Show invitation ── */
@@ -1068,10 +1176,13 @@ body{
         startCountdown();
         setTimeout(revealNames, 600);
 
-        // IMPORTANT: Do NOT auto-unmute / start audio here.
-        // Mobile browsers block it without a user gesture.
-        // Instead, show the music button. First tap anywhere will start it.
-        if (musicBtn) musicBtn.style.display = 'flex';
+        // show music button once inside invitation
+        setBtnUI();
+
+        // fade in music IF it was unlocked during cover tap AND not muted by user
+        if (musicUnlocked && !userMuted) {
+          fadeInMusic(0.5);
+        }
       });
     }, 100);
 
@@ -1082,44 +1193,41 @@ body{
     }, 2300);
   }
 
-  /* ── Autoplay video → invitation after 2s ── */
-  function startVideo() {
+  /* ── User taps the cover → unlock music + play video ── */
+  function onCoverTap() {
+    if (state !== 0) return;
+
+    var overlay = document.getElementById('tap-overlay');
+    if (overlay) overlay.classList.add('hidden');
+
+    // Unlock audio in the SAME user gesture
+    unlockMusic().then(function(){
+      if (musicUnlocked){
+        // keep silent for now; fade in after invitation shows
+        bgMusic.muted = true;
+        bgMusic.volume = 0;
+      }
+    });
+
+    // Play envelope video (muted)
     vid.muted   = true;
     vidBg.muted = true;
+    vid.currentTime = 0;
 
     vid.addEventListener('timeupdate', function () {
       var diff = Math.abs((vidBg.currentTime || 0) - (vid.currentTime || 0));
       if (diff > 0.08) { try { vidBg.currentTime = vid.currentTime; } catch (e) {} }
     });
+
     vid.addEventListener('play', function () { try { vidBg.play(); } catch (e) {} });
 
-    function doPlay() {
-      vid.currentTime = 0;
-      var p = vid.play();
-      if (p && typeof p.catch === 'function') {
-        p.catch(function () { showInvitation(); });
-      }
-
-      // Preload music silently (muted). This is safe.
-      // Real playback with sound will start on first user tap.
-      if (bgMusic) {
-        bgMusic.muted = true;
-        bgMusic.volume = 0;
-        bgMusic.play().catch(function () { /* ignore */ });
-      }
-
-      setTimeout(showInvitation, 2000);
+    var p = vid.play();
+    if (p && typeof p.catch === 'function') {
+      p.catch(function () { showInvitation(); });
     }
 
-    if (vid.readyState >= 3) {
-      doPlay();
-    } else {
-      vid.load();
-      vidBg.load();
-      vid.addEventListener('canplay', doPlay, { once: true });
-      setTimeout(function () { if (state === 0) showInvitation(); }, 3500);
-    }
-
+    // Fallback + natural end
+    setTimeout(showInvitation, 2000);
     vid.addEventListener('ended', showInvitation, { once: true });
   }
 
@@ -1171,17 +1279,17 @@ body{
   }
 
   /* ══ LIGHTBOX ══ */
+  // ✅ FIXED: match your grid indexes (0..13) and filenames
   var lbPhotos = [
-    '1771651904158_image.png',
-    '1771651913473_image.png',
-    '1771651923672_image.png',
-    '1771651938838_image.png'
+    'image1.png','image2.png','image3.png','image4.png','image5.png','image7.png',
+    'image8.png','image9.png','image10.png','image11.png','image12.png','image13.png',
+    'image14.png','image15.png'
   ];
   var lbCur = 0;
   var lbTouchX = 0;
 
   function openLightbox(i) {
-    lbCur = i;
+    lbCur = clamp(i, 0, lbPhotos.length - 1);
     document.getElementById('lb-img').src = lbPhotos[lbCur];
     document.getElementById('lightbox').classList.add('open');
   }
@@ -1200,19 +1308,20 @@ body{
     bgMusic  = document.getElementById('bg-music');
     musicBtn = document.getElementById('music-btn');
 
+    // default hidden until invitation appears
+    if (musicBtn) musicBtn.style.display = 'none';
+
     if (getEntries().length > 0) {
       document.getElementById('rsvp-export-btn').style.display = 'block';
     }
 
+    // Pre-load video to first frame
+    vid.load();
+    vidBg.load();
+
     initSlideshow();
-    startVideo();
 
-    // ✅ This is the KEY: start music on the first user interaction (mobile-safe)
-    document.addEventListener('pointerdown', startMusicFromGesture);
-    document.addEventListener('touchstart', startMusicFromGesture, { passive:true });
-    document.addEventListener('keydown', startMusicFromGesture);
-
-    /* Lightbox: keyboard + touch swipe */
+    // Lightbox: keyboard + touch swipe
     document.addEventListener('keydown', function (e) {
       var lb = document.getElementById('lightbox');
       if (!lb.classList.contains('open')) return;
@@ -1225,6 +1334,7 @@ body{
     lb.addEventListener('touchstart', function (e) {
       lbTouchX = e.changedTouches[0].clientX;
     }, { passive: true });
+
     lb.addEventListener('touchend', function (e) {
       var dx = e.changedTouches[0].clientX - lbTouchX;
       if (Math.abs(dx) > 50) lbNav(dx < 0 ? 1 : -1);
@@ -1242,8 +1352,10 @@ body{
   window.closeLightbox = closeLightbox;
   window.lbNav         = lbNav;
   window.toggleMusic   = toggleMusic;
+  window.onCoverTap    = onCoverTap;
 
 }());
 </script>
+
 </body>
 </html>
