@@ -1,11 +1,14 @@
+Index · HTML
+Copy
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <!-- ===== Social Share Preview (iMessage / WhatsApp / Android Messages / etc.) ===== -->
 <meta property="og:title" content="Ashley & Peter — Wedding Invitation">
 <meta property="og:description" content="You are invited to celebrate our wedding — June 6, 2026 in Kottayam, Kerala.">
-<meta property="og:image" content="https://ashley-and-peter.click/image13.png">
-<meta property="og:image:secure_url" content="https://ashley-and-peter.click/image13.png">
+<meta property="og:image" content="https://ashley-and-peter.click/image3.png">
+<meta property="og:image:secure_url" content="https://ashley-and-peter.click/image3.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -15,7 +18,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Ashley & Peter — Wedding Invitation">
 <meta name="twitter:description" content="You are invited to celebrate our wedding — June 6, 2026 in Kottayam, Kerala.">
-<meta name="twitter:image" content="https://ashley-and-peter.click/image13.png">
+<meta name="twitter:image" content="https://ashley-and-peter.click/image3.png">
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
@@ -338,6 +341,73 @@ body{
 .cdn{font-family:"Cinzel",serif;font-size:46px;font-size:clamp(30px,8.5vw,46px);color:var(--white);line-height:1;display:block}
 .cdl{font-family:"Cinzel",serif;font-size:9px;letter-spacing:.3em;color:var(--gold-light);margin-top:5px;display:block;opacity:.8}
 
+/* ── BIBLE VERSE ────────────────────────────────────────── */
+.verse{
+  background:var(--cream-warm);
+  padding:3.8rem 2rem;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.verse::before{
+  content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+  background:-webkit-radial-gradient(50% 50%,ellipse,rgba(107,124,92,.06),transparent 70%);
+  background:radial-gradient(ellipse at 50% 50%,rgba(107,124,92,.06),transparent 70%);
+}
+.verse-cross{
+  font-size:24px;letter-spacing:.5em;
+  color:var(--sage-dark);
+  opacity:1;
+  margin-bottom:1.4rem;
+  position:relative;z-index:1;
+}
+.verse-text{
+  font-family:"Cormorant Garamond",serif;
+  font-size:22px;font-size:clamp(18px,5vw,24px);
+  color:#3a2e22;
+  font-style:italic;
+  font-weight:400;
+  line-height:1.75;
+  max-width:360px;
+  margin:0 auto 1.4rem;
+  position:relative;z-index:1;
+}
+.verse-text .vq{
+  font-size:3.2em;line-height:0;
+  color:var(--sage-dark);opacity:.6;
+  vertical-align:-.35em;
+  margin-right:.04em;
+  font-style:normal;
+}
+.verse-ref{
+  font-family:"Cinzel",serif;
+  font-size:11px;font-size:clamp(9px,2.5vw,11px);
+  letter-spacing:.35em;
+  color:var(--sage-dark);
+  opacity:1;
+  text-transform:uppercase;
+  position:relative;z-index:1;
+}
+.verse-divider{
+  display:-webkit-box;display:-ms-flexbox;display:flex;
+  -webkit-box-align:center;-ms-flex-align:center;align-items:center;
+  gap:1rem;
+  max-width:200px;
+  margin:1.6rem auto;
+  position:relative;z-index:1;
+}
+.verse-divider .vdl{
+  -webkit-box-flex:1;-ms-flex:1;flex:1;height:1px;
+  background:-webkit-linear-gradient(left,transparent,rgba(74,89,64,.7),transparent);
+  background:linear-gradient(to right,transparent,rgba(74,89,64,.7),transparent);
+}
+.verse-divider .vdd{
+  width:5px;height:5px;
+  background:rgba(74,89,64,.8);
+  -webkit-transform:rotate(45deg);transform:rotate(45deg);
+  -ms-flex-negative:0;flex-shrink:0;
+}
+
 /* ── STORY ─────────────────────────────────────────────── */
 .story{
   background:-webkit-linear-gradient(160deg,#2e3a1e,#3a4828 50%,#2a3618);
@@ -355,7 +425,35 @@ body{
 .prog{background:var(--cream-warm);padding:3.5rem 2rem 4rem;text-align:center}
 .prog .sl{color:var(--sage)}
 .prog-title{font-family:"Great Vibes",cursive;font-size:62px;font-size:clamp(40px,11vw,62px);color:var(--sage-dark);margin:.2rem 0 .6rem;line-height:1.1}
-.prog-sub{font-family:"Cormorant Garamond",serif;font-size:17px;font-size:clamp(14px,3.5vw,17px);color:#7a6e58;font-style:italic;margin-bottom:2.2rem;opacity:.85}
+.prog-sub{font-family:"Cormorant Garamond",serif;font-size:17px;font-size:clamp(14px,3.5vw,17px);color:#7a6e58;font-style:italic;margin-bottom:1.6rem;opacity:.85}
+
+/* Date banner */
+.prog-date{
+  display:inline-block;
+  margin:0 auto 2rem;
+  padding:.55rem 1.4rem;
+  border:1px solid rgba(74,89,64,.3);
+  border-radius:50px;
+  background:rgba(74,89,64,.06);
+}
+.prog-date-day{
+  font-family:"Cinzel",serif;
+  font-size:13px;font-size:clamp(11px,3vw,14px);
+  font-weight:500;
+  color:var(--sage-dark);
+  letter-spacing:.12em;
+  line-height:1.2;
+  display:block;
+}
+.prog-date-full{
+  font-family:"Cormorant Garamond",serif;
+  font-size:12px;font-size:clamp(10px,2.5vw,13px);
+  color:var(--sage);
+  letter-spacing:.18em;
+  font-style:italic;
+  margin-top:.15rem;
+  display:block;
+}
 .prog-icons{font-size:18px;letter-spacing:.6em;color:var(--sage);opacity:.5;margin-bottom:2rem}
 .tl{max-width:380px;margin:0 auto;position:relative;text-align:left}
 .tl::before{content:"";position:absolute;left:22px;top:26px;bottom:26px;width:1px;background:-webkit-linear-gradient(top,transparent,rgba(107,124,92,.35) 10%,rgba(107,124,92,.35) 90%,transparent);background:linear-gradient(to bottom,transparent,rgba(107,124,92,.35) 10%,rgba(107,124,92,.35) 90%,transparent)}
@@ -709,16 +807,27 @@ body{
     </div>
   </section>
 
+  <!-- BIBLE VERSE -->
+  <section class="verse">
+    <div class="verse-cross">✞</div>
+    <p class="verse-text">
+      <span class="vq"></span>In everything give thanks; for this is the will of God in Christ Jesus
+    </p>
+    <div class="verse-divider">
+      <div class="vdl"></div><div class="vdd"></div><div class="vdl"></div>
+    </div>
+    <p class="verse-ref">✦ 1 Thessalonians 5:18 &nbsp;✦&nbsp;</p>
+  </section>
+
   <!-- STORY -->
   <section class="story" id="story">
     <p class="sl">How It All Began</p>
     <h2 class="story-title">Our Story</h2>
     <div class="story-hearts">🤎 ✦ 🤎</div>
     <p class="story-text">
-      <span class="oq"></span>The first time I saw Ashley was at my sister's housewarming. I still remember calling my sister about picking up food — and somehow, without even thinking twice, I decided to get food for Ashley too. It wasn't about trying to impress anyone; it was simply who I was, long before I realized how special she would become in my life.<br><br>
-      We started talking on Facebook as two strangers, sharing simple conversations that slowly turned into something I began to look forward to every day. Eventually, I asked for her number, and those random chats became part of my routine.<br><br>
-      One day while I was driving, I casually asked where she was — and when she said she was nearby, I decided to stop by just to say hi. That quick hello turned into a Starbucks coffee… a small moment that quietly meant more than either of us realized at the time.<br><br>
-      Months later, almost out of nowhere, I finally asked her out. What started as a simple question became the beginning of our story — a journey that took us from strangers, to friends, to something far deeper.<br><br>
+      <span class="oq"></span>The first time I saw Ashley was at my sister’s housewarming. We didn’t talk much that day, but something about her stayed with me. Not long after, we started talking on Facebook as two strangers, sharing simple conversations that slowly turned into something I began to look forward to every day. Eventually, I asked for her number, and those random chats became part of my routine.<br><br>
+      One day while I was driving, I casually asked where she was, and when she said she was nearby, I decided to stop by just to say hi. That quick hello turned into a Starbucks coffee… a small moment that quietly meant more than either of us realized at the time.<br><br>
+      Months later, almost out of nowhere, I finally asked her out. What started as a simple question became the beginning of our story, a journey that took us from strangers, to friends, to something far deeper.<br><br>
       And now, here we are… writing a forever that once began with a simple hello. 🤎
     </p>
   </section>
@@ -728,6 +837,10 @@ body{
     <p class="sl" style="color:var(--sage)">Day Program</p>
     <h2 class="prog-title">What We Have Planned</h2>
     <p class="prog-sub">A beautiful day together, crafted with love — from vows to celebration</p>
+    <div class="prog-date">
+      <span class="prog-date-day">Saturday, June 6, 2026</span>
+      <span class="prog-date-full">Kottayam, Kerala</span>
+    </div>
     <div class="prog-icons">❀ ✦ ❀</div>
     <div class="tl">
       <div class="tli"><div class="tlic">💍</div><div class="tlc"><span class="tlt">2:30 PM — 4:00 PM</span><div class="tln">Wedding Ceremony</div><div class="tld">Exchange of vows at St. Mary's Church, Marangoly</div></div></div>
@@ -842,7 +955,7 @@ body{
   <section class="rsvp" id="rsvp">
     <p class="sl" style="color:var(--sage)">Join Us On Our Special Day</p>
     <h2 class="rsvp-title">RSVP</h2>
-    <p class="rsvp-sub">Kindly reply by March 15th, 2026</p>
+    <p class="rsvp-sub">Kindly reply by April 15th, 2026</p>
     <div class="rsvp-form" id="rsvp-form">
       <div class="rf-group">
         <label class="rf-label" for="rf-name">Full Name</label>
@@ -1324,4 +1437,3 @@ body{
 
 </body>
 </html>
-
