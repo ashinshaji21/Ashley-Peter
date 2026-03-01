@@ -841,10 +841,10 @@ body{
     </div>
     <div class="prog-icons">❀ ✦ ❀</div>
     <div class="tl">
-      <div class="tli"><div class="tlic">💍</div><div class="tlc"><span class="tlt">2:30 PM to 4:00 PM</span><div class="tln">Wedding Ceremony</div><div class="tld">Exchange of vows at St. Mary's Church, Marangoly</div></div></div>
-      <div class="tli"><div class="tlic">🏡</div><div class="tlc"><span class="tlt">4:30 PM to 5:15 PM</span><div class="tln">Newlyweds' Homecoming</div><div class="tld">Traditional first entry of the bride into the family home 🕯️</div></div></div>
+      <div class="tli"><div class="tlic">💍</div><div class="tlc"><span class="tlt">2:30 PM — 4:00 PM</span><div class="tln">Wedding Ceremony</div><div class="tld">Exchange of vows at St. Mary's Church, Marangoly</div></div></div>
+      <div class="tli"><div class="tlic">🏡</div><div class="tlc"><span class="tlt">4:30 PM — 5:15 PM</span><div class="tln">Newlyweds' Homecoming</div><div class="tld">Traditional first entry of the bride into the family home 🕯️</div></div></div>
       <div class="tli"><div class="tlic">🚌</div><div class="tlc"><span class="tlt">Departs 4:30 PM · Returns 9:00 PM</span><div class="tln">Shuttle to Reception</div><div class="tld">From St. Mary's Church to Grand Arena, please be on time!</div></div></div>
-      <div class="tli"><div class="tlic">🎉</div><div class="tlc"><span class="tlt">5:30 PM to 9:00 PM</span><div class="tln">Reception &amp; Celebration</div><div class="tld">Dinner, music &amp; dancing as we begin our forever together</div></div></div>
+      <div class="tli"><div class="tlic">🎉</div><div class="tlc"><span class="tlt">5:30 PM — 9:00 PM</span><div class="tln">Reception &amp; Celebration</div><div class="tld">Dinner, music &amp; dancing as we begin our forever together</div></div></div>
     </div>
   </section>
 
@@ -964,12 +964,12 @@ body{
         <div class="rf-select-wrap">
           <select class="rf-select" id="rf-guests">
             <option value="">Select…</option>
-            <option value="1">1 · Just me</option>
+            <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
             <option value="4">4</option>
             <option value="5">5</option>
-            <option value="6+">6 or more</option>
+            <option value="6+">6+</option>
           </select>
         </div>
       </div>
@@ -1304,7 +1304,7 @@ body{
   /* ══ RSVP ══ */
   function chooseSide(btn, side) {
     selectedSide = side;
-    document.querySelectorAll('.rf-side-btn').forEach(function (b) { b.classList.remove('chosen'); });
+    document.querySelectorAll('.rf-side-btn').forEach(function(b) { b.classList.remove('chosen'); });
     btn.classList.add('chosen');
   }
 
@@ -1316,51 +1316,43 @@ body{
     el.style.display = 'block';
   }
 
-  function chooseSide(btn, side) {
-    selectedSide = side; // must match the Google Form option text exactly
-    document.querySelectorAll('.rf-side-btn').forEach(b => b.classList.remove('chosen'));
-    btn.classList.add('chosen');
-  }
-
   function submitRSVP() {
-    const nameEl   = document.getElementById('rf-name');
-    const guestsEl = document.getElementById('rf-guests');
-    const btn      = document.getElementById('rf-submit');
+    var nameEl   = document.getElementById('rf-name');
+    var guestsEl = document.getElementById('rf-guests');
+    var btn      = document.getElementById('rf-submit');
 
-    const name   = (nameEl?.value || '').trim();
-    const guests = guestsEl?.value || '';
+    var name   = (nameEl ? nameEl.value : '').trim();
+    var guests = guestsEl ? guestsEl.value : '';
 
     if (!name)        { showMsg('err','Please enter your full name.'); return; }
     if (!guests)      { showMsg('err','Please select the number of guests.'); return; }
     if (!selectedSide){ showMsg('err',"Please choose Bride's Side or Groom's Side."); return; }
 
-    btn.disabled = true;
+    if (btn) btn.disabled = true;
 
-    // IMPORTANT: values must match Form option text exactly
-    const body = new URLSearchParams();
-    body.append("entry.938920911", name);
-    body.append("entry.1668899705", guests);
-    body.append("entry.1971767113", selectedSide);
+    var formBody = new URLSearchParams();
+    formBody.append('entry.938920911',  name);
+    formBody.append('entry.1668899705', guests);
+    formBody.append('entry.1971767113', selectedSide);
 
-    fetch("https://docs.google.com/forms/d/e/1FAIpQLSdUeX4rpjWUdgJfexV1u4mXWCgwpFhoFbGkWz3kdX4OdeRLYA/formResponse", {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
-      body: body.toString(),
-      keepalive: true
-    })
-    .then(() => {
-      showMsg('ok', `🤎 Thank you, ${name}! We look forward to celebrating with you.`);
-      nameEl.value = '';
-      guestsEl.value = '';
-      document.querySelectorAll('.rf-side-btn').forEach(b => b.classList.remove('chosen'));
+    var savedName = name;
+
+    fetch('https://docs.google.com/forms/d/e/1FAIpQLSdUeX4rpjWUdgJfexV1u4mXWCgwpFhoFbGkWz3kdX4OdeRLYA/formResponse', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+      body: formBody.toString()
+    }).then(function() {
+      showMsg('ok', '\uD83E\uDD0E Thank you, ' + savedName + '! We look forward to celebrating with you.');
+      if (nameEl)   nameEl.value   = '';
+      if (guestsEl) guestsEl.value = '';
+      document.querySelectorAll('.rf-side-btn').forEach(function(b) { b.classList.remove('chosen'); });
       selectedSide = '';
-    })
-    .catch(() => {
-      // note: with no-cors, real network failures are rare to detect reliably
+      if (btn) btn.disabled = false;
+    }).catch(function() {
       showMsg('err','Sorry, something went wrong. Please try again.');
-    })
-    .finally(() => btn.disabled = false);
+      if (btn) btn.disabled = false;
+    });
   }
 
   /* ══ LIGHTBOX ══ */
@@ -1435,5 +1427,3 @@ body{
 
 </body>
 </html>
-
-
