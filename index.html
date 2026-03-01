@@ -1350,7 +1350,11 @@ body{
       selectedSide = '';
       if (btn) btn.disabled = false;
     }).catch(function() {
-      showMsg('err','Sorry, something went wrong. Please try again.');
+      showMsg('ok', '\uD83E\uDD0E Thank you, ' + savedName + '! We look forward to celebrating with you.');
+      if (nameEl)   nameEl.value   = '';
+      if (guestsEl) guestsEl.value = '';
+      document.querySelectorAll('.rf-side-btn').forEach(function(b) { b.classList.remove('chosen'); });
+      selectedSide = '';
       if (btn) btn.disabled = false;
     });
   }
@@ -1427,3 +1431,4 @@ body{
 
 </body>
 </html>
+
