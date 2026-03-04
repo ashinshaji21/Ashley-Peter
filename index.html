@@ -7,7 +7,9 @@ Copy
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <meta name="theme-color" content="#1e2a10">
-<!-- ===== Social Share Preview (iMessage / WhatsApp / Android Messages / etc.) ===== -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Social Share Preview -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://ashley-and-peter.click/">
 <meta property="og:title" content="Ashley &amp; Peter | Wedding Invitation">
@@ -21,11 +23,8 @@ Copy
 <meta name="twitter:title" content="Ashley &amp; Peter | Wedding Invitation">
 <meta name="twitter:description" content="You are invited to celebrate our wedding on June 6, 2026 in Kottayam, Kerala.">
 <meta name="twitter:image" content="https://ashley-and-peter.click/image13.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Ashley &amp; Peter | Wedding Invitation</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Great+Vibes&family=Allura&family=Pinyon+Script&family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
-
 <style>
 /* ── RESET ─────────────────────────────────────────────── */
 *,*::before,*::after{-webkit-box-sizing:border-box;box-sizing:border-box;margin:0;padding:0}
@@ -1343,7 +1342,7 @@ body{
       headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
       body: formBody.toString()
     }).then(function() {
-      showMsg('ok', '\uD83E\uDD0E Thank you, ' + savedName + '! We look forward to celebrating with you.');
+      showMsg('ok', '❤ Thank you, ' + savedName + '! We look forward to celebrating with you.');
       if (nameEl)   nameEl.value   = '';
       if (guestsEl) guestsEl.value = '';
       document.querySelectorAll('.rf-side-btn').forEach(function(b) { b.classList.remove('chosen'); });
